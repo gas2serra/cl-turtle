@@ -43,7 +43,8 @@
 
 ; clearing and saving
 (defgeneric surface-clear (surface)
-  )
+  (:method ((surface surface))
+    ))
 
 (defgeneric surface-resize (surface width height)
   (:method ((surface surface) width height)

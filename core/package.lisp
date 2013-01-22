@@ -29,8 +29,7 @@
    turtle-heading
    turtle-heading/radians
    turtle-pen-position
-   turtle-pen-width   
-   turtle-pen-color
+   turtle-pen-style   
    ; moving
    turtle-move
    ; turning
@@ -42,8 +41,8 @@
    turtle-goto
    turtle-home
    ; style
-   turtle-pen-change-color
-   turtle-pen-change-width
+   turtle-get-pen-style
+   turtle-set-pen-style
    ; turtle's sufrace
    turtle-surface
    ))

@@ -11,10 +11,6 @@
 		 (:module "cairo-backend"
 			  :components (
 				       (:file "cairo-package")
-				       (:file "cairo-utilities" 
-					      :depends-on ("cairo-package"))
-				       (:file "cairo-turtle"
-					      :depends-on ("cairo-surface"))
-				       (:File "cairo-surface"
-					      :depends-on ("cairo-utilities")))))
+				       (:file "cairo" 
+					      :depends-on ("cairo-package")))))
     :depends-on ("cl-turtle" "cl-cairo2"))

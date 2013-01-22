@@ -21,19 +21,17 @@
 		 :reader turtle-pen-position
 		 :type (member :down :up)
 		 :documentation "the position of the pen")
-   (pen-width :initform 1
-	      :initarg :pen-width
-	      :reader turtle-pen-width
-	      :type number
-	      :documentation "the width of the pen")
-   (pen-color :initform (cl-colors:add-alpha cl-colors:+darkgoldenrod+ 0.5)
- 	      :initarg :pen-color
-	      :reader turtle-pen-color
-	      :type (or cl-colors:rgb cl-colors:rgba)
-	      :documentation "the color of the pen")
+   (pen-style :initform (list :width 1 :color (cl-colors:add-alpha cl-colors:+darkgoldenrod+ 0.5))
+	      :initarg :pen-style
+	      :reader turtle-pen-style
+	      :type list
+	      :documentation "the style of the pen")
    (surface :initform nil
 	    :reader turtle-surface
-	    :documentation "the surface where the turtle lives"))
+	    :documentation "the surface where the turtle lives")
+   (trail :initform nil
+	  :accessor turtle-trail
+	  :documentation "the trail of the turtle"))
   (:documentation "A turtle"))
 
 ; heading
@@ -45,7 +43,10 @@
     (multiple-value-bind (dx dy) 
 	(polar->cartesian distance (degrees->radians (turtle-heading turtle)))
       (setf (slot-value turtle 'x) (+ (turtle-x turtle) dx))
-      (setf (slot-value turtle 'y) (+ (turtle-y turtle) dy)))))
+      (setf (slot-value turtle 'y) (+ (turtle-y turtle) dy))
+      (when (eq (turtle-pen-position turtle) :down)
+	(add-point-to-trail turtle)))))
+
 ; turning
 (defgeneric turtle-turn (turtle degree)
   (:method ((turtle turtle) degree)
@@ -56,12 +57,14 @@
 ; pulling the pen
 (defgeneric turtle-pull-pen (turtle pos)
   (:method ((turtle turtle) pos)
+    (when (eq pos :down)
+      (add-new-trail-path turtle))
     (setf (slot-value turtle 'pen-position) pos)))
 ; goto
 (defgeneric turtle-goto (turtle x y)
   (:method ((turtle turtle) x y)
-      (setf (slot-value turtle 'x) x)
-      (setf (slot-value turtle 'y) y)))
+     (setf (slot-value turtle 'x) x)
+     (setf (slot-value turtle 'y) y)))
 (defun turtle-home (turtle)
   (setf (slot-value turtle 'heading) 0)
   (if (eq (turtle-pen-position turtle) :up)
@@ -72,10 +75,21 @@
 	(turtle-pull-pen turtle :down))))
 
 ; drawing style
-(defgeneric turtle-pen-change-color (turtle rgb)
-  (:method ((turtle turtle) rgb)
-    (setf (slot-value turtle 'pen-color) rgb)))
+(defgeneric turtle-get-pen-style (turtle attr)
+  (:method ((turtle turtle) attr)
+    (getf (slot-value turtle 'pen-style) attr)))
 
-(defgeneric turtle-pen-change-width (turtle width)
-  (:method ((turtle turtle) width)
-    (setf (slot-value turtle 'pen-width) width)))
+(defgeneric turtle-set-pen-style (turtle attr value)
+  (:method ((turtle turtle) attr value)
+    (setf (getf (slot-value turtle 'pen-style) attr) value)))
+
+; trail
+(defun add-new-trail-path (turtle)
+  (push 
+   (list 
+    (copy-list (turtle-pen-style turtle))
+    (list (list (turtle-x turtle) (turtle-y turtle))))
+   (turtle-trail turtle)))
+(defun add-point-to-trail (turtle)
+  (push (list (turtle-x turtle) (turtle-y turtle))
+	(second (car (turtle-trail turtle)))))

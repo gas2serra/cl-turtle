@@ -64,21 +64,21 @@
 ; drawing style
 (defun change-pen-width (width)
   (assert (>= width 0))
-  (turtle:turtle-pen-change-width *turtle* width))
+  (turtle:turtle-set-pen-style *turtle* :width width))
 
 (defun change-pen-color-by-name (color &optional alpha)
   (check-type color (or cl-colors:rgb cl-colors:rgba))
   (assert (or (null alpha) (and (>= alpha 0.0) (<= alpha 1.0))))
-  (turtle:turtle-pen-change-color *turtle*
-				  (if alpha 
-				      (cl-colors:add-alpha color alpha)
-				      color)))
+  (turtle:turtle-set-pen-style *turtle* :color
+			       (if alpha 
+				   (cl-colors:add-alpha color alpha)
+				   color)))
 (defun change-pen-color (r g b &optional (a 1.0))
   (assert (every (lambda (x) (and (>= x 0.0) (<= x 1.0))) (list r g b a)))
-  (turtle:turtle-pen-change-color *turtle* 
-				  (make-instance 'cl-colors:rgba 
-						 :red r :green g 
-						 :blue b :alpha a)))
+  (turtle:turtle-set-pen-style *turtle* :color
+			       (make-instance 'cl-colors:rgba 
+					      :red r :green g 
+					      :blue b :alpha a)))
 ; surface
 (defun clear ()
   (turtle:surface-clear *surface*))
