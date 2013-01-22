@@ -44,19 +44,16 @@
 ; clearing and saving
 (defgeneric surface-clear (surface)
   (:method ((surface surface))
-    ))
+    (dolist (turtle (surface-turtles surface) nil)
+      (turtle-clear-trail turtle))))
 
-(defgeneric surface-resize (surface width height)
-  (:method ((surface surface) width height)
-    (setf (slot-value surface 'width) width)
-    (setf (slot-value surface 'height) height)))
-
-(defgeneric surface-save-as-png (surface filename)
+(defgeneric surface-save-as (surface filename)
   )
 
 ; destroing
 (defgeneric surface-destroy (surface)
   (:method ((surface surface))
+    (surface-clear surface)
     (dolist (turtle (surface-turtles surface))
       (setf (slot-value turtle 'surface) nil))
     (setf (slot-value surface 'turtles) nil)))

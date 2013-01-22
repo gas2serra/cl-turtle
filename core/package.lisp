@@ -17,8 +17,7 @@
    surface-remove-turtle
    ; primitives
    surface-clear
-   surface-resize
-   surface-save-as-png
+   surface-save-as
    surface-destroy
    ;
    ; turtle
@@ -40,6 +39,7 @@
    ; goto
    turtle-goto
    turtle-home
+   turtle-turn-to
    ; style
    turtle-get-pen-style
    turtle-set-pen-style

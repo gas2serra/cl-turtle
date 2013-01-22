@@ -84,6 +84,9 @@
     (setf (getf (slot-value turtle 'pen-style) attr) value)))
 
 ; trail
+(defun turtle-clear-trail (turtle)
+  (setf (slot-value turtle 'trail) nil)
+  (turtle-pull-pen turtle :up))
 (defun add-new-trail-path (turtle)
   (push 
    (list 
