@@ -22,12 +22,10 @@
 		 :reader turtle-pen-position
 		 :type (member :down :up)
 		 :documentation "the position of the pen")
-   (pen-style :initform (list 
-			 :width 1 
-			 :color (cl-colors:add-alpha cl-colors:+darkgoldenrod+ 0.5))
+   (pen-style :initform (make-instance 'style)
 	      :initarg :pen-style
 	      :reader turtle-pen-style
-	      :type list
+	      :type style
 	      :documentation "the style of the pen")
    (surface :initform nil
 	    :reader turtle-surface
@@ -60,8 +58,10 @@
 ; pulling the pen
 (defgeneric turtle-pull-pen (turtle pos)
   (:method ((turtle turtle) pos)
-    (when (eq pos :down)
-      (add-new-trail-path turtle))
+    (if (eq pos :down)
+      (add-new-trail-path turtle)
+      (when (turtle-trail turtle)
+	(surface-add-path (turtle-surface turtle) (turtle-trail turtle))))
     (setf (slot-value turtle 'pen-position) pos)))
 ; goto
 (defgeneric turtle-goto (turtle x y)
@@ -83,23 +83,26 @@
 ; drawing style
 (defgeneric turtle-get-pen-style (turtle attr)
   (:method ((turtle turtle) attr)
-    (getf (slot-value turtle 'pen-style) attr)))
+    (style-get-attribute (turtle-pen-style turtle) attr)))
 
 (defgeneric turtle-set-pen-style (turtle attr value)
   (:method ((turtle turtle) attr value)
-    (setf (getf (slot-value turtle 'pen-style) attr) value)))
+    (style-set-attribute (turtle-pen-style turtle) attr value)))
+
+; 
+(defun turtle-position (turtle)
+  (list (turtle-x turtle) (turtle-y turtle)))
 
 ; trail
 (defun turtle-clear-trail (turtle)
   (setf (slot-value turtle 'trail) nil)
   (turtle-pull-pen turtle :up))
 (defun add-new-trail-path (turtle)
-  (push 
-   (make-path :style (copy-list (turtle-pen-style turtle))
-	      :points (list 
-		       (list (turtle-x turtle) (turtle-y turtle))))
-   (turtle-trail turtle)))
+  (setf (slot-value turtle 'trail)
+	(make-instance 'path 
+		       :style (style-clone (turtle-pen-style turtle))
+		       :points (list (turtle-position turtle)))))
 (defun add-point-to-path (turtle)
   (path-add-point 
-   (car (turtle-trail turtle))
-   (list (turtle-x turtle) (turtle-y turtle))))
+   (turtle-trail turtle)
+   (turtle-position turtle)))

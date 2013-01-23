@@ -27,10 +27,15 @@
     :accessor surface-color
     :type cl-colors:rgb
     :documentation "the color of the surface")
-   (turtles 
+   (turtles
     :initform nil
     :reader surface-turtles
-    :documentation "turtles playing in this surface"))
+    :documentation "turtles playing in this surface")
+   (paths
+    :initform nil
+    :type list
+    :reader surface-paths
+    :documentation "the paths to be drawn in the surface"))
   (:documentation "A surface"))
 
 (defmethod initialize-instance :after ((surface surface) &key)
@@ -48,9 +53,17 @@
 	  (delete turtle (slot-value surface 'turtles)))
     (setf (slot-value turtle 'surface) nil)))
 
+; paths adding
+(defgeneric surface-add-path (surface path)
+  (:method ((surface surface) path)
+    (push path (slot-value surface 'paths))))
+(defun surface-ordered-paths (surface)
+  (reverse (surface-paths surface)))
+
 ; clearing and saving
 (defgeneric surface-clear (surface)
   (:method ((surface surface))
+    (setf (slot-value surface 'paths) nil)
     (dolist (turtle (surface-turtles surface) nil)
       (turtle-clear-trail turtle))))
 

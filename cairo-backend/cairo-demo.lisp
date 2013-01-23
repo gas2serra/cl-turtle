@@ -21,4 +21,8 @@
 	  (move 10)
 	  (turn 72))
   (save-as "a.png")
+  (save-as "a.svg")
+  (save-as "a.pdf")
+  (save-as "a.ps")
+
   (turtle-destroy))

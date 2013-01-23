@@ -12,9 +12,12 @@
    surface-height
    surface-color
    surface-turtles
-   ; turtles's primitive
+   surface-paths
+   surface-ordered-paths
+   ; 
    surface-add-turtle
    surface-remove-turtle
+   surface-add-path
    ; primitives
    surface-clear
    surface-save-as
@@ -49,5 +52,7 @@
    ;
    ; path
    ;
-
+   path
+   path-style
+   path-ordered-points
    ))
