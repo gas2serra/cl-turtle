@@ -20,5 +20,5 @@
 	  (pen-up)
 	  (move 10)
 	  (turn 72))
-  (cl-cairo-turtle::cairo-save-as-png "a.png" logo::*surface*)
+  (save-as "a.png")
   (turtle-destroy))

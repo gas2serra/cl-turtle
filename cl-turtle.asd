@@ -15,8 +15,10 @@
 					      :depends-on ("package"))
 				       (:file "surface"
 					      :depends-on ("package"))
+				       (:file "path"
+					      :depends-on ("package"))
 				       (:file "turtle" 
-					      :depends-on ("utilities" "surface"))))
+					      :depends-on ("utilities" "surface" "path"))))
 		 (:module "logo"
 			  :components (
 				       (:file "logo-package")

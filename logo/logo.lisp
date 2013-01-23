@@ -106,11 +106,27 @@
 (defun pen-pos ()
   "Return the position of the pen"
   (turtle:turtle-pen-position *turtle*))
+(defun pen-downp ()
+  (eq (turtle:turtle-pen-position *turtle*) :down))
 (defun pen-style (&optional (attr nil))
   "Return the style of the pen"
   (if attr
       (turtle:turtle-get-pen-style *turtle* attr)
       (turtle:turtle-pen-style *turtle*)))
+
+; utility
+(defun towards (x y)
+  "Return the angle between the line from turtle position to position specified by (x,y)"
+  (let ((angle (turtle::radians->degrees
+		(acos (/ (- x (x-cor)) (distance x y))))))
+    (- (if (>= y 0.0)
+	   angle
+	   (- 360 angle))
+       (heading))))
+(defun distance (x y)
+  "Return the distance from the turtle to (x,y)"
+  (sqrt (+ (expt (- x (x-cor)) 2)
+	   (expt (- y (y-cor)) 2))))
 
 ; language macros
 (defmacro repeat (n &rest body)
@@ -129,3 +145,8 @@
 	(make-instance 'cl-colors:rgba :red r :green g :blue b :alpha a)))
 (defun save-as (filename)
   (turtle:surface-save-as *surface* filename))
+
+;
+;
+;
+; reset - home + clear + reset defaults

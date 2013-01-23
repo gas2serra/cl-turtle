@@ -13,7 +13,7 @@
 
 
 
-(defun cairo-save-as-png (filename surface)
+(defun cairo-save-as-png (surface filename)
   (let* ((surf (cl-cairo2:create-image-surface :ARGB32
 					       (surface-width surface)
 					       (surface-height surface)))
@@ -37,8 +37,8 @@
 	     (+ (/ width 2) x))
 	   (y->pos (y)
 	     (- (/ height 2) y)))
-    (let ((style (car path))
-	  (path (reverse (cadr path))))
+    (let ((style (cl-turtle::path-style path))
+	  (path (reverse (cl-turtle::path-points path))))
       (set-source-color (getf style :color))
       (cl-cairo2:set-line-width (getf style :width))
       (cl-cairo2:move-to  (x->pos (first (car path)))
@@ -48,3 +48,6 @@
 			   (y->pos (second point))))
       (cl-cairo2:stroke))))
 
+(setf 
+ (gethash "png" turtle::*ext->save-as-fn*) 
+ #'cairo-save-as-png)

@@ -29,7 +29,11 @@
    y-cor
    heading
    pen-pos
+   pen-downp
    pen-style
+   ; utility
+   towards
+   distance
    ; language contructes
    repeat
    ; surface

@@ -1,5 +1,6 @@
 (in-package :cl-turtle)
 
+
 ;
 ; A turtle
 ;
@@ -16,12 +17,14 @@
 	    :initarg :heading
 	    :reader turtle-heading
 	    :documentation "the heading of the turtle")
-   (pen-position :initform :down
+   (pen-position :initform :up
 		 :initarg :pen-position
 		 :reader turtle-pen-position
 		 :type (member :down :up)
 		 :documentation "the position of the pen")
-   (pen-style :initform (list :width 1 :color (cl-colors:add-alpha cl-colors:+darkgoldenrod+ 0.5))
+   (pen-style :initform (list 
+			 :width 1 
+			 :color (cl-colors:add-alpha cl-colors:+darkgoldenrod+ 0.5))
 	      :initarg :pen-style
 	      :reader turtle-pen-style
 	      :type list
@@ -45,7 +48,7 @@
       (setf (slot-value turtle 'x) (+ (turtle-x turtle) dx))
       (setf (slot-value turtle 'y) (+ (turtle-y turtle) dy))
       (when (eq (turtle-pen-position turtle) :down)
-	(add-point-to-trail turtle)))))
+	(add-point-to-path turtle)))))
 
 ; turning
 (defgeneric turtle-turn (turtle degree)
@@ -64,7 +67,10 @@
 (defgeneric turtle-goto (turtle x y)
   (:method ((turtle turtle) x y)
      (setf (slot-value turtle 'x) x)
-     (setf (slot-value turtle 'y) y)))
+     (setf (slot-value turtle 'y) y)
+     (when (eq (turtle-pen-position turtle) :down)
+       (add-point-to-path turtle))))
+
 (defun turtle-home (turtle)
   (setf (slot-value turtle 'heading) 0)
   (if (eq (turtle-pen-position turtle) :up)
@@ -89,10 +95,11 @@
   (turtle-pull-pen turtle :up))
 (defun add-new-trail-path (turtle)
   (push 
-   (list 
-    (copy-list (turtle-pen-style turtle))
-    (list (list (turtle-x turtle) (turtle-y turtle))))
+   (make-path :style (copy-list (turtle-pen-style turtle))
+	      :points (list 
+		       (list (turtle-x turtle) (turtle-y turtle))))
    (turtle-trail turtle)))
-(defun add-point-to-trail (turtle)
-  (push (list (turtle-x turtle) (turtle-y turtle))
-	(second (car (turtle-trail turtle)))))
+(defun add-point-to-path (turtle)
+  (path-add-point 
+   (car (turtle-trail turtle))
+   (list (turtle-x turtle) (turtle-y turtle))))
