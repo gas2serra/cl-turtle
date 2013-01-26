@@ -14,6 +14,7 @@
    surface-turtles
    surface-paths
    surface-ordered-paths
+   surface-resize
    ; adding/removing
    surface-add-turtle
    surface-remove-turtle

@@ -37,7 +37,11 @@
 
 ; initializing
 (defmethod initialize-instance :after ((surface surface) &key)
-  )
+  (surface-clear surface))
+(defgeneric surface-resize (surface width height)
+  (:method ((surface surface) width height)
+    (setf (slot-value surface 'width) width)
+    (setf (slot-value surface 'height) height)))
 
 ; turtles adding and removing
 (defgeneric surface-add-turtle (surface turtle)
