@@ -18,19 +18,20 @@
    pull-pen
    pen-up
    pen-down
-   ; drawing style
-   set-pen-style
-   set-pen-width
-   set-pen-color-by-name
-   set-pen-color
    ; status
    pos
    x-cor
    y-cor
    heading
    pen-pos
-   pen-downp
-   pen-style
+   ; drawing
+   pen
+   pen-attr
+   clone-pen
+   new-pen
+   change-pen
+   new-rgb-color
+   new-rgba-color
    ; utility
    towards
    distance
@@ -40,6 +41,7 @@
    clear
    set-background-color
    save-as
+   reset
 
    ; configuration
    *surface-class*

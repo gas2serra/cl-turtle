@@ -1,13 +1,6 @@
 (in-package :cl-turtle)
 
 ;
-; saving
-;
-
-(defvar *ext->save-as-fn* (make-hash-table :test #'equal) 
-  "the mapping between the ext type of filename and the function that saves it")
-
-;
 ; A surface where turtles can play
 ;
 (defclass surface ()
@@ -38,6 +31,11 @@
     :documentation "the paths to be drawn in the surface"))
   (:documentation "A surface"))
 
+; saving
+(defvar *ext->save-as-fn* (make-hash-table :test #'equal) 
+  "the mapping between the ext type of filename and the function that saves it")
+
+; initializing
 (defmethod initialize-instance :after ((surface surface) &key)
   )
 
@@ -66,7 +64,11 @@
     (setf (slot-value surface 'paths) nil)
     (dolist (turtle (surface-turtles surface) nil)
       (turtle-clear-trail turtle))))
-
+(defgeneric surface-reset (surface)
+  (:method ((surface surface))
+    (surface-clear surface)
+    (dolist (turtle (surface-turtles surface) nil)
+      (turtle-reset turtle))))
 (defgeneric surface-save-as (surface filename)
   (:method ((surface surface) filename)
     (let ((fn (gethash (pathname-type (pathname filename)) *ext->save-as-fn*)))

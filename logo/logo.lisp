@@ -25,128 +25,138 @@
   "Destroy the surface and all its turtles"
   (turtle:surface-destroy *surface*)
   (setf *surface* nil)
-  (setf *turtle* nil)) 
+  (setf *turtle* nil))
 
 ; moving
-(defun move (len)
+(defun move (len &optional (turtle *turtle*))
   "Moves the turtle forwards (len>0) or backwards (len<0)"
-  (turtle:turtle-move *turtle* len))
-(defun forward (len)
+  (turtle:turtle-move turtle len))
+(defun forward (len &optional (turtle *turtle*))
   "Moves the turtle forwards"
   (assert (>= len 0))
-  (move len))
-(defun backward (len)
+  (move len turtle))
+(defun backward (len &optional (turtle *turtle*))
   "Moves the turtle backwards"
   (assert (>= len 0))
-  (move (- len)))
+  (move (- len turtle)))
 
 ; turning
-(defun turn (degree)
-  "Turns the turtle left (degree>0) or right (degree<0)"
+(defun turn (degree &optional (turtle *turtle*))
+  "Turns the turtle right (degree>0) or left (degree<0)"
   (assert (and (> degree -360) (< degree 360)))
-  (turtle:turtle-turn *turtle* degree))
-(defun left (degree)
+  (turtle:turtle-turn turtle degree))
+(defun left (degree &optional (turtle *turtle*))
   "Turns the turtle left"
   (assert (and (>= degree 0) (< degree 360)))
-  (turn degree))
-(defun right (degree)
+  (turn (- degree) turtle))
+(defun right (degree &optional (turtle *turtle*))
   "Turns the turtle right"
   (assert (and (>= degree 0) (< degree 360)))
-  (turn (- degree)))
+  (turn degree turtle))
 
 ; goto
-(defun goto (x y)
-  "Moves the turtle to the surface coordinates [0 0]"
-  (turtle:turtle-goto *turtle* x y))
-(defun home ()
+(defun goto (x y &optional (turtle *turtle*))
+  "Moves the turtle to the surface coordinates [x y]"
+  (turtle:turtle-goto turtle x y))
+(defun home (&optional (turtle *turtle*))
   "Moves the turtle to the center of the surface coordinates [0 0], pointing up"
-  (turtle:turtle-home *turtle*))
-(defun turn-to (degree)
+  (turtle:turtle-home turtle))
+(defun turn-to (degree &optional (turtle *turtle*))
   "Moves the turtle in order to point to degree"
-  (turtle:turtle-turn *turtle* (- degree (heading))))
+  (turtle:turtle-turn-to turtle degree))
 
 ; pen controll
-(defun pull-pen (pos)
-  "Pull down or up the pen of the turtle"
+(defun pull-pen (pos &optional (turtle *turtle*))
+  "Pulls down or up the pen of the turtle"
   (assert (member pos '(:up :down)))
-  (turtle:turtle-pull-pen *turtle* pos))
-(defun pen-up ()
+  (turtle:turtle-pull-pen turtle pos))
+(defun pen-up ( &optional (turtle *turtle*))
   "Lifts up the pen of the turtle"
-  (pull-pen :up))
-(defun pen-down ()
+  (pull-pen :up turtle))
+(defun pen-down ( &optional (turtle *turtle*))
   "Puts down the pen of the turtle" 
-  (pull-pen :down))
-
-; drawing style
-(defun set-pen-style (attr value)
-  "Set a style's attribute of the pen"
-  (turtle:turtle-set-pen-style *turtle* attr value))
-(defun set-pen-width (width)
-  "Set the width of the pen"
-  (assert (>= width 0))
-  (set-pen-style :width width))
-(defun set-pen-color (r g b &optional (a 1.0))
-  "Set the color as rgb of th pen"
-  (assert (every (lambda (x) (and (>= x 0.0) (<= x 1.0))) (list r g b a)))
-  (set-pen-style :color (make-instance 'cl-colors:rgba :red r :green g :blue b :alpha a)))
+  (pull-pen :down turtle))
 
 ; status
-(defun pos ()
-  "Return the position of the turtle"
-  (list (x-cor) (y-cor)))
-(defun x-cor ()
-  "Return the x coordinate of the turtle"
-  (turtle:turtle-x *turtle*))
-(defun y-cor ()
-  "Return the y coordinate of the turtle"
-  (turtle:turtle-y *turtle*))
-(defun heading ()
-  "Return the turtle's heading in degrees"
-  (turtle:turtle-heading *turtle*))
-(defun pen-pos ()
-  "Return the position of the pen"
-  (turtle:turtle-pen-position *turtle*))
-(defun pen-downp ()
-  (eq (turtle:turtle-pen-position *turtle*) :down))
-(defun pen-style (&optional (attr nil))
-  "Return the style of the pen"
-  (if attr
-      (turtle:turtle-get-pen-style *turtle* attr)
-      (turtle:turtle-pen-style *turtle*)))
+(defun x-cor (&optional (turtle *turtle*))
+  "Returns the x coordinate of the turtle"
+  (turtle:turtle-x turtle))
+(defun y-cor (&optional (turtle *turtle*))
+  "Returns the y coordinate of the turtle"
+  (turtle:turtle-y turtle))
+(defun heading (&optional (turtle *turtle*))
+  "Returns the turtle's heading in degrees"
+  (turtle:turtle-heading turtle))
+(defun pen-pos (&optional (turtle *turtle*))
+  "Returns the position of the pen (:down or :up)"
+  (turtle:turtle-pen-position turtle))
+(defun pos (&optional (turtle *turtle*))
+  "Returns the position of the turtle"
+  (list (x-cor turtle) (y-cor turtle)))
+(defun state (&optional (turtle *turtle*))
+  "Returns the full state of the turtle"
+  (list :x (x-cor turtle) :y (y-cor turtle) :heading (heading turtle) 
+	:pen-pos (pen-pos turtle)))
 
 ; utility
-(defun towards (x y)
-  "Return the angle between the line from turtle position to position specified by (x,y)"
-  (let ((angle (turtle::radians->degrees
-		(acos (/ (- x (x-cor)) (distance x y))))))
-    (- (if (>= y 0.0)
-	   angle
-	   (- 360 angle))
-       (heading))))
-(defun distance (x y)
-  "Return the distance from the turtle to (x,y)"
-  (sqrt (+ (expt (- x (x-cor)) 2)
-	   (expt (- y (y-cor)) 2))))
+(defun towards (x y &optional (turtle *turtle*))
+  "Returns the angle between the line from turtle position to position specified by (x,y)"
+  (let ((angle (turtle:radians->degrees 
+		(acos (/ (- x (x-cor turtle)) (distance x y turtle))))))
+    (- (if (>= y 0.0) angle (- 360 angle)) (heading turtle))))
+(defun distance (x y &optional (turtle *turtle*))
+  "Returns the distance from the turtle to (x,y)"
+  (points-distance x y (x-cor turtle) (y-cor turtle)))
 
 ; language macros
 (defmacro repeat (n &rest body)
-  "Repeat n-times the body"
+  "Repeats n-times the body"
   (let ((i (gensym "i")))
     `(dotimes (,i ,n)
        ,@body)))
 
 ; surface
 (defun clear ()
+  "clears the surface"
   (turtle:surface-clear *surface*))
-(defun set-background-color (r g b &optional (a 1.0))
-  "Set the backgound color as rgb of th pen"
-  (assert (every (lambda (x) (and (>= x 0.0) (<= x 1.0))) (list r g b a)))
-  (setf (turtle:surface-color *surface*) 
-	(make-instance 'cl-colors:rgba :red r :green g :blue b :alpha a)))
+(defun reset ()
+  "reset the surface"
+  (turtle:surface-reset *surface*))
 (defun save-as (filename)
+  "saves the surface as an image"
   (turtle:surface-save-as *surface* filename))
 
-;
-;
-;
-; reset - home + clear + reset defaults
+; color
+;(defun rgb (r g b)
+;  (make-instance 'cl-colors:rgb :red r :green g :blue b))
+;(defun rgba (r g b a)
+;  (make-instance 'cl-colors:rgb :red r :green g :blue b :alpha a))
+
+; drawing style
+
+(defun pen (&optional (turtle *turtle*))
+  "Returns the pen used by the turtle"
+  (turtle:turtle-pen turtle))
+(defun pen-attr (attr &optional (pen (pen *turtle*)))
+  "Returns the value of an attribute of the pen"
+  (turtle:pen-get-attribute pen attr))
+(defun change-pen (pen &optional (turtle *turtle*))
+  "Change the pen style"
+  (setf (turtle:turtle-pen turtle) pen))
+(defun new-pen (&rest props)
+  "Create a new pen style"
+  (apply #'make-instance 'turtle:pen props))
+(defun clone-pen (pen  &rest props)
+  "Create a new pen style"
+  (turtle:pen-clone pen props))
+(defun new-rgb-color (r g b)
+  (assert (every (lambda (x) (and (>= x 0.0) (<= x 1.0))) (list r g b)))
+  (make-instance 'cl-colors:rgb :red r :green g :blue b))
+(defun new-rgba-color (r g b a)
+  (assert (every (lambda (x) (and (>= x 0.0) (<= x 1.0))) (list r g b a)))
+  (make-instance 'cl-colors:rgba :red r :green g :blue b :alpha a))
+(defun set-background-color (color)
+  "Set the backgound color as rgb of th pen"
+  (setf (turtle:surface-color *surface*) color))
+
+

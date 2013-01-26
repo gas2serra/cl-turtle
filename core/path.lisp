@@ -1,14 +1,14 @@
 (in-package :cl-turtle)
 
 ;
-; a path 
+; a path (immutable)
 ;
 
 (defclass path  ()
-  ((style 
+  ((pen
     :initform nil
-    :initarg :style
-    :reader path-style
+    :initarg :pen
+    :reader path-pen
     :type list
     :documentation "the style used to draw the path of points")
    (points

@@ -12,12 +12,13 @@
 
 (defun run ()
   (turtle-init :width 300 :height 700)
-  (set-pen-width 3)
-  (set-pen-color 0.5 0.2 0.2 0.3)
+  (change-pen (new-pen :width 3 :color (new-rgba-color 0.5 0.4 0.4 0.6)))
   (repeat 5
 	  (pen-down)
 	  (draw-square 80)
 	  (pen-up)
+	  (change-pen (clone-pen (pen) 
+				 :width (+ 2 (pen-attr :width))))
 	  (move 10)
 	  (turn 72))
   (save-as "a.png")

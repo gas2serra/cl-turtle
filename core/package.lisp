@@ -14,45 +14,62 @@
    surface-turtles
    surface-paths
    surface-ordered-paths
-   ; 
+   ; adding/removing
    surface-add-turtle
    surface-remove-turtle
    surface-add-path
    ; primitives
    surface-clear
+   surface-reset
    surface-save-as
    surface-destroy
    ;
    ; turtle
    ;
+   ; class
    turtle
+   ; attributes
    turtle-x
    turtle-y
    turtle-heading
-   turtle-heading/radians
    turtle-pen-position
-   turtle-pen-style   
+   turtle-pen   
+   turtle-surface
+   turtle-trail
    ; moving
    turtle-move
    ; turning
    turtle-turn
-   turtle-turn/radians
    ; pulling
    turtle-pull-pen
    ; goto
    turtle-goto
    turtle-home
    turtle-turn-to
-   ; style
-   turtle-get-pen-style
-   turtle-set-pen-style
-   ; turtle's sufrace
-   turtle-surface
+   ; trail
+   ;...
 
+   ;
+   ; style
+   ;
+   pen
+   pen-width
+   pen-color
+   pen-linecap
+   pen-linejoin
+   pen-miterlimit
+   pen-dasharray
+   pen-dashoffset
+   pen-get-attribute
+   pen-clone
    ;
    ; path
    ;
    path
-   path-style
+   path-pen
    path-ordered-points
+
+   ; utility
+   radians->degrees
+   points-distance
    ))
