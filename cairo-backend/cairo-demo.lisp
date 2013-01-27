@@ -12,7 +12,8 @@
 
 (defun run ()
   (turtle-init :width 300 :height 700)
-  (change-pen (new-pen :width 3 :color (new-rgba-color 0.5 0.4 0.4 0.6)))
+;  (change-pen (new-pen :width 3 :color (new-rgba-color 0.8 0.3 0.1 0.4)))
+  (change-pen (new-pen :width 3 :color '(0.8 0.3 0.1)))
   (repeat 5
 	  (pen-down)
 	  (draw-square 80)

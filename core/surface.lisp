@@ -1,21 +1,26 @@
 (in-package :cl-turtle)
 
+; default slots of the surface
+(defconstant +default-surface-width+ 400)
+(defconstant +default-surface-height+ 400)
+(defconstant +default-surface-color+ cl-colors:+whitesmoke+)
+
 ;
 ; A surface where turtles can play
 ;
 (defclass surface ()
   ((width 
-    :initform 400
+    :initform +default-surface-width+
     :initarg :width 
     :reader surface-width
     :documentation "the width of the surface")
    (height 
-    :initform 400
+    :initform +default-surface-height+
     :initarg :height
     :reader surface-height
     :documentation "the height of the surface")
    (color
-    :initform cl-colors:+whitesmoke+
+    :initform +default-surface-color+
     :initarg :color
     :accessor surface-color
     :type cl-colors:rgb
@@ -48,7 +53,6 @@
   (:method ((surface surface) turtle)
     (push turtle (slot-value surface 'turtles))
     (setf (slot-value turtle 'surface) surface)))
-
 (defgeneric surface-remove-turtle (surface turtle)
   (:method ((surface surface) turtle)
     (setf (slot-value surface 'turtles)

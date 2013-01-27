@@ -17,6 +17,8 @@
 					      :depends-on ("cairo-utilities"))
 				       (:file "cairo-turtle"
 					      :depends-on ("cairo-utilities"))
+				       (:file "cairo-save" 
+					      :depends-on ("cairo-package" "cairo-utilities" "cairo"))
 				       (:file "cairo" 
 					      :depends-on ("cairo-package")))))
     :depends-on ("cl-turtle" "cl-cairo2"))

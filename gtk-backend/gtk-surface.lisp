@@ -34,3 +34,6 @@
 (defun gtk-surface-update-turtle (surface turtle)
   (turtle-window-update-turtle (gtk-surface-window surface)))
 
+(defmethod turtle:surface-add-path :after ((surface gtk-surface) path) 
+  (gtk-surface-update surface))
+  

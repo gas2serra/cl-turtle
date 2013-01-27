@@ -1,40 +1,39 @@
 (in-package :cl-turtle)
 
 ;
-; the style of the pen (immutable object)
+; the pen (immutable object) used to draw 
 ;
-
 (defclass pen ()
   ((width :initform 1
 	  :initarg :width
 	  :reader pen-width
 	  :type integer
-	  :documentation "")
+	  :documentation "the line thickness")
    (color :initform (cl-colors:add-alpha cl-colors:+darkgoldenrod+ 0.5)
 	  :initarg :color
 	  :reader pen-color
 	  :type (or cl-colors:rgba cl-colors:rgb)
-	  :documentation "")
+	  :documentation "the line color")
    (linecap :initform :butt
 	    :initarg :linecap
 	    :reader pen-linecap
 	    :type (member :butt :round :square)
-	    :documentation "")
+	    :documentation "The decoration applied to the ends of unclosed paths segments")
    (linejoin :initform :miter
 	     :initarg :linejoin
 	     :reader pen-linejoin
 	     :type (member :miter :round :bevel)
-	     :documentation "")
+	     :documentation "The decoration applied at the intersection of two path segments")
    (miterlimit :initform 4
 	       :initarg :miterlimit
 	       :reader pen-miterlimit
 	       :type integer
-	       :documentation "")
+	       :documentation "The limit to trim a line join that has a JOIN_MITER decoration")
    (dasharray :initform nil ;#(5 1 3 3)
-	      :initarg :dash-array
+	      :initarg :dasharray
 	      :reader pen-dasharray
 	      :type array
-	      :documentation "")
+	      :documentation "The array representing the lengths of the dash segments")
    (dashoffset :initform 0
 	       :initarg :dashoffset
 	       :reader pen-dashoffset
@@ -61,10 +60,21 @@
 
 (defun pen-clone (pen props)
   "Clones the pen setting properties"
-  (make-instance 'pen 
-		 :width (or (getf props :width) (pen-width pen))
-		 :color (or (getf props :color) (pen-color pen))
-		 :linecap (or (getf props :linecap) (pen-linecap pen))
-		 :linejoin (or (getf props :linejoin) (pen-linejoin pen))
-		 :miterlimit (or (getf props :miterlimit) (pen-miterlimit pen))
-		 :dashoffset (or (getf props :dashoffset) (pen-dashoffset pen))))
+  (let ((p (copy-list props)))
+    (when (null (getf props :width))
+      (setf (getf p :width) (pen-width pen)))
+    (when (null (getf props :color))
+      (setf (getf p :color) (pen-color pen)))
+    (when (null (getf props :linecap))
+      (setf (getf p :linecap) (pen-linecap pen)))
+    (when (null (getf props :linejoin))
+      (setf (getf p :linejoin) (pen-linejoin pen)))
+    (when (null (getf props :miterlimit))
+      (setf (getf p :miterlimit) (pen-miterlimit pen)))
+    (when (null (getf props :dasharray))
+      (setf (getf p :dasharray) (pen-dasharray pen)))	
+    (when (null (getf props :dashoffset))
+      (setf (getf p :dashoffset) (pen-dashoffset pen)))
+    (apply #'make-instance 'pen p)))
+
+

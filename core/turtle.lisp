@@ -1,37 +1,44 @@
 (in-package :cl-turtle)
 
+; default slots of the turtle in the home position
+(defconstant +default-turtle-home-x+ 0)
+(defconstant +default-turtle-home-y+ 0)
+(defconstant +default-turtle-home-heading+ 90)
+(defconstant +default-turtle-home-pen-position+ :up)
+(defconstant +default-turtle-home-pen+ (make-instance 'pen))
+
 ;
 ; A turtle
 ;
 (defclass turtle ()
-  ((x :initform 0
+  ((x :initform +default-turtle-home-x+
       :initarg :x
       :reader turtle-x
       :documentation "the x coordinate of the turtle in the surface")
-   (y :initform 0
+   (y :initform +default-turtle-home-y+
       :initarg :y
       :reader turtle-y
       :documentation "the y coordinate of the turtle in the surface")
-   (heading :initform 90
+   (heading :initform +default-turtle-home-heading+
 	    :initarg :heading
 	    :reader turtle-heading
 	    :documentation "the heading of the turtle")
-   (pen-position :initform :up
+   (pen-position :initform :+default-turtle-home-pen-position+
 		 :initarg :pen-position
 		 :reader turtle-pen-position
 		 :type (member :down :up)
 		 :documentation "the position of the pen")
-   (pen :initform (make-instance 'pen)
-	      :initarg :pen
-	      :accessor turtle-pen
-	      :type pen
-	      :documentation "the style of the pen")
+   (pen :initform +default-turtle-home-pen+
+	:initarg :pen
+	:accessor turtle-pen
+	:type pen
+	:documentation "the style of the pen")
    (surface :initform nil
 	    :reader turtle-surface
 	    :documentation "the surface where the turtle lives")
    (trail :initform nil
 	  :accessor turtle-trail
-	  :documentation "the trail of the turtle"))
+	  :documentation "the trail (incomplete path) of the turtle"))
   (:documentation "A turtle"))
 
 ; moving
@@ -43,7 +50,7 @@
       (setf (slot-value turtle 'x) (+ (turtle-x turtle) dx))
       (setf (slot-value turtle 'y) (+ (turtle-y turtle) dy))
       (when (eq (turtle-pen-position turtle) :down)
-	(add-point-to-path turtle)))))
+	(turtle-add-point-into-trail turtle)))))
 ; turning
 (defgeneric turtle-turn (turtle degree)
   (:documentation "Turns the turtle right (degree>0) or left (degree<0)")
@@ -57,16 +64,16 @@
      (setf (slot-value turtle 'x) x)
      (setf (slot-value turtle 'y) y)
      (when (eq (turtle-pen-position turtle) :down)
-       (add-point-to-path turtle))))
+       (turtle-add-point-into-trail turtle))))
 (defgeneric turtle-home (turtle)
   (:documentation "Moves the turtle to the center of the surface coordinates [0 0], pointing up")
   (:method ((turtle turtle))
-    (setf (slot-value turtle 'heading) 90)
+    (setf (slot-value turtle 'heading) +default-turtle-home-heading+)
     (if (eq (turtle-pen-position turtle) :up)
-	(turtle-goto turtle 0 0)
+	(turtle-goto turtle +default-turtle-home-x+ +default-turtle-home-y+)
 	(progn 
 	  (turtle-pull-pen turtle :up)
-	  (turtle-goto turtle 0 0)
+	  (turtle-goto turtle +default-turtle-home-x+ +default-turtle-home-y+)
 	  (turtle-pull-pen turtle :down)))))
 (defgeneric turtle-turn-to (turtle degree)
   (:documentation "Moves the turtle in order to point to degree")
@@ -76,31 +83,35 @@
 (defgeneric turtle-pull-pen (turtle pos)
   (:documentation "Pulls down or up the pen of the turtle")
   (:method ((turtle turtle) pos)
+    (setf (slot-value turtle 'pen-position) pos)
     (if (eq pos :down)
-      (add-new-trail-path turtle)
-      (when (turtle-trail turtle)
-	(surface-add-path (turtle-surface turtle) (turtle-trail turtle))))
-    (setf (slot-value turtle 'pen-position) pos)))
+	(setf (slot-value turtle 'trail) 
+	      (make-instance 'path :pen (turtle-pen turtle)
+			     :points (list (list (turtle-x turtle) (turtle-y turtle)))))
+	(when (turtle-trail turtle)
+	  (let ((path (turtle-trail turtle)))
+	    (turtle-clear-trail turtle)
+	    (surface-add-path (turtle-surface turtle) path))))))
+
 ; reset
 (defgeneric turtle-reset (turtle)
-  (:documentation "")
+  (:documentation "Moves the turtle in the home in the default state")
   (:method ((turtle turtle))
+    (turtle-clear-trail)
     (turtle-home turtle)
-    ; set defaults 
-    ))
+    (setf (slot-value turtle 'x) +default-turtle-home-x+)
+    (setf (slot-value turtle 'y) +default-turtle-home-y+)
+    (setf (slot-value turtle 'heading) +default-turtle-home-heading+)
+    (setf (slot-value turtle 'pen-position) +default-turtle-home-pen-position+)
+    (setf (slot-value turtle 'pen) +default-turtle-home-pen+)))
 
 ; trail
-(defun turtle-clear-trail (turtle)
-  (setf (slot-value turtle 'trail) nil)
-  (turtle-pull-pen turtle :up))
-(defun add-new-trail-path (turtle)
-  (setf (slot-value turtle 'trail)
-	(make-instance 'path 
-		       :pen (turtle-pen turtle)
-		       :points (list 
-				(list (turtle-x turtle) (turtle-y turtle))))))
-(defun add-point-to-path (turtle)
-  (path-add-point 
-   (turtle-trail turtle)
-   (list (turtle-x turtle) (turtle-y turtle))))
+(defgeneric turtle-clear-trail (turtle)
+  (:method ((turtle turtle))
+    (setf (slot-value turtle 'trail) nil)))
 
+(defgeneric turtle-add-point-into-trail (turtle)
+  (:method ((turtle turtle))
+    (path-add-point 
+     (turtle-trail turtle)
+     (list (turtle-x turtle) (turtle-y turtle)))))

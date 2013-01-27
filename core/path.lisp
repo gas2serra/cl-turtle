@@ -3,14 +3,13 @@
 ;
 ; a path (immutable)
 ;
-
 (defclass path  ()
   ((pen
     :initform nil
     :initarg :pen
     :reader path-pen
     :type list
-    :documentation "the style used to draw the path of points")
+    :documentation "the pen used to draw the path of points")
    (points
     :initform nil 
     :initarg :points 

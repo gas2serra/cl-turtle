@@ -12,18 +12,18 @@
    surface-height
    surface-color
    surface-turtles
-   surface-paths
-   surface-ordered-paths
+   ; primitives
    surface-resize
-   ; adding/removing
    surface-add-turtle
    surface-remove-turtle
-   surface-add-path
-   ; primitives
    surface-clear
    surface-reset
    surface-save-as
    surface-destroy
+   surface-add-path
+   ; utilities
+   surface-ordered-paths
+
    ;
    ; turtle
    ;
@@ -37,21 +37,19 @@
    turtle-pen   
    turtle-surface
    turtle-trail
-   ; moving
+   ; primitives
    turtle-move
-   ; turning
    turtle-turn
-   ; pulling
    turtle-pull-pen
-   ; goto
    turtle-goto
    turtle-home
    turtle-turn-to
-   ; trail
-   ;...
+   turtle-reset
+   turtle-add-point-into-trail
+   turtle-clear-trail
 
    ;
-   ; style
+   ; pen
    ;
    pen
    pen-width
@@ -71,6 +69,9 @@
    path-ordered-points
 
    ; utility
+   degrees->radians
    radians->degrees
+   polar->cartesian
+   normalize-angle
    points-distance
    ))

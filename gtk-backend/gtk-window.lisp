@@ -97,12 +97,7 @@
     (cairo:with-context (ctx)
       (let ((s (turtle-window-scale-factor window)))
 	(cairo:scale s s)
-	(cairo:set-source-surface 
-	 (cairo-surface-surface (turtle-window-surface window)) 0 0)
-	(cairo:paint)
-	(cairo:set-source-surface 
-	 (cl-cairo-turtle::cairo-surface-tmp-surface (turtle-window-surface window)) 0 0)
-	(cairo:paint)
+	(cl-cairo-turtle::cairo-surface-paint-to (turtle-window-surface window))
 	nil))))
 ; surface toolbar
 (defun turtle-window-build-surface-tootbar (window builder)
