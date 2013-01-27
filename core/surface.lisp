@@ -87,7 +87,6 @@
 ; destroing
 (defgeneric surface-destroy (surface)
   (:method ((surface surface))
-    (surface-clear surface)
     (dolist (turtle (surface-turtles surface))
       (setf (slot-value turtle 'surface) nil))
     (setf (slot-value surface 'turtles) nil)))

@@ -34,7 +34,7 @@
 ;
 (defun cairo-save-as (cairo-surface surface) 
   (let ((cl-cairo2:*context* (cl-cairo2:create-context cairo-surface)))
-    (set-source-color (surface-color surface))
+    (cairo-set-color (surface-color surface))
     (cl-cairo2:paint)
     (dolist (path (cl-turtle:surface-ordered-paths surface))
       (cairo-plot-path path (surface-width surface) (surface-height surface)))

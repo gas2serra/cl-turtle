@@ -6,7 +6,7 @@
 (defclass cairo-turtle (turtle)
   ())
 
-(defmethod turtle:turtle-add-point-into-trail :around ((turtle cairo-turtle))
+(defmethod turtle:turtle-add-point-into-trail ((turtle cairo-turtle))
   (call-next-method)
   (let ((surface (turtle-surface turtle)))
     (with-cairo-tmp-surface (surface)
@@ -17,7 +17,7 @@
 			 (surface-width surface) (surface-height surface))))))
 
 
-(defmethod turtle:turtle-clear-trail :around ((turtle cairo-turtle))
+(defmethod turtle:turtle-clear-trail ((turtle cairo-turtle))
   (call-next-method)
   (let ((surface (turtle-surface turtle)))
     (with-cairo-tmp-surface (surface)

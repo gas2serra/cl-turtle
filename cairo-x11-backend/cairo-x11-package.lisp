@@ -1,7 +1,7 @@
-(defpackage :cl-gtk-turtle
+(defpackage :cl-cairo-x11-turtle
   (:use :cl-cairo-turtle :cl-turtle :common-lisp)
-  (:nicknames :gtk-turtle)
+  (:nicknames :cairo-x11-turtle)
   (:export 
-   gtk-turtle
-   gtk-surface   
+   cairo-x11-turtle
+   cairo-x11-surface   
    ))

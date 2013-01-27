@@ -67,11 +67,11 @@
 	(cl-cairo2:create-context (cairo-surface-tmp-surface surface))))
 
 (defmethod turtle:surface-destroy ((surface cairo-surface))
+  (call-next-method)
   (cl-cairo2:destroy (cairo-surface-surface surface))
   (cl-cairo2:destroy (cairo-surface-context surface))
   (cl-cairo2:destroy (cairo-surface-tmp-surface surface))
-  (cl-cairo2:destroy (cairo-surface-tmp-context surface))
-  (call-next-method))
+  (cl-cairo2:destroy (cairo-surface-tmp-context surface)))
 
 (defmethod turtle:surface-clear ((surface cairo-surface))
   (call-next-method)
@@ -86,13 +86,7 @@
 (defmethod turtle:surface-add-path ((surface cairo-surface) path)
   (call-next-method)
   (with-cairo-surface (surface) 
-    (cairo-plot-path path (surface-width surface) (surface-height surface)))
-  (with-cairo-tmp-surface (surface)
-    (cairo:set-operator :clear)
-    (cairo:paint)
-    (dolist (turtle (cl-turtle:surface-turtles surface))
-      (cairo-plot-path (cl-turtle:turtle-trail turtle) 
-    (surface-width surface) (surface-height surface)))))
+    (cairo-plot-path path (surface-width surface) (surface-height surface))))
 
 (defgeneric cairo-surface-paint-to (surface)
   (:method ((surface cairo-surface))

@@ -1,10 +1,6 @@
-(defpackage :cl-gtk-turtle-demo
-  (:use :cl-gtk-turtle :cl-logo :common-lisp)
-  (:export 
-   run
-   stop))
+(ql:quickload "cl-cairo-turtle")
 
-(in-package :cl-gtk-turtle-demo)
+(in-package :cl-logo-user)
 
 (defun draw-square (len)
   (repeat 4
@@ -15,8 +11,7 @@
   (let ((*turtle-class* 'cl-gtk-turtle:gtk-turtle)
 	(*surface-class* 'cl-gtk-turtle:gtk-surface))
     (turtle-init)
-   ; (clean)
-;    (change-pen-color 0.9 0.5 0.5)
+    (change-pen (new-pen :width 3 :color '(0.8 0.3 0.1 0.4)))
     (repeat 5
 	    (pen-down)
 	    (draw-square 70)
@@ -24,6 +19,4 @@
 	    (move 10)
 	    (turn 72))))
 
-(defun stop ()
-  (save-as "a.png")
-  (turtle-destroy))
+(run)
