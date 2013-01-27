@@ -54,11 +54,11 @@
    pen
    pen-width
    pen-color
-   pen-linecap
-   pen-linejoin
-   pen-miterlimit
-   pen-dasharray
-   pen-dashoffset
+   pen-line-cap
+   pen-line-join
+   pen-miter-limit
+   pen-dash-array
+   pen-dash-offset
    pen-get-attribute
    pen-clone
    ;

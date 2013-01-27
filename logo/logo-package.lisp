@@ -30,8 +30,6 @@
    clone-pen
    new-pen
    change-pen
-   new-rgb-color
-   new-rgba-color
    ; utility
    towards
    distance

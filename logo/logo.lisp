@@ -126,14 +126,7 @@
   "saves the surface as an image"
   (turtle:surface-save-as *surface* filename))
 
-; color
-;(defun rgb (r g b)
-;  (make-instance 'cl-colors:rgb :red r :green g :blue b))
-;(defun rgba (r g b a)
-;  (make-instance 'cl-colors:rgb :red r :green g :blue b :alpha a))
-
 ; drawing style
-
 (defun pen (&optional (turtle *turtle*))
   "Returns the pen used by the turtle"
   (turtle:turtle-pen turtle))
@@ -146,15 +139,9 @@
 (defun new-pen (&rest props)
   "Create a new pen style"
   (apply #'make-instance 'turtle:pen props))
-(defun clone-pen (pen  &rest props)
+(defun clone-pen (&rest props &key (pen (pen)) &allow-other-keys)
   "Create a new pen style"
-  (turtle:pen-clone pen props))
-(defun new-rgb-color (r g b)
-  (assert (every (lambda (x) (and (>= x 0.0) (<= x 1.0))) (list r g b)))
-  (make-instance 'cl-colors:rgb :red r :green g :blue b))
-(defun new-rgba-color (r g b a)
-  (assert (every (lambda (x) (and (>= x 0.0) (<= x 1.0))) (list r g b a)))
-  (make-instance 'cl-colors:rgba :red r :green g :blue b :alpha a))
+  (apply #'turtle:pen-clone pen props))
 (defun set-background-color (color)
   "Set the backgound color as rgb of th pen"
   (setf (turtle:surface-color *surface*) color))
