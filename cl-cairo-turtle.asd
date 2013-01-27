@@ -4,7 +4,7 @@
 (in-package #:cl-cairo-turtle-system)
 
 (defsystem cl-cairo-turtle
-    :author "Alessandro Serra (seralessandro@gmail.com)"
+    :author "Alessandro Serra (gas2serra@gmail.com)"
     :licence "GPL"
     :version "0.1"
     :components (

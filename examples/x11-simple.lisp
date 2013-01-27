@@ -8,8 +8,8 @@
 	  (turn 90)))
 
 (defun run()
-  (let ((*turtle-class* 'cl-cairo-x11-turtle:cairo-x11-turtle)
-	(*surface-class* 'cl-cairo-x11-turtle:cairo-x11-surface))
+  (let ((*turtle-class* 'cl-x11-turtle:x11-turtle)
+	(*surface-class* 'cl-x11-turtle:x11-surface))
     (turtle-init)
     (change-pen (new-pen :width 3 :color '(0.8 0.3 0.1 0.4)))
     (repeat 5

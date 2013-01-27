@@ -3,9 +3,6 @@
   (:nicknames :cairo-turtle)
   (:export 
    cairo-turtle
-   cairo-surface
-
-   cairo-turtle
    cairo-surface   
    cairo-surface-context
    cairo-surface-surface

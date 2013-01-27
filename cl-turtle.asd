@@ -14,7 +14,7 @@
 				       (:file "utilities" 
 					      :depends-on ("package"))
 				       (:file "surface"
-					      :depends-on ("package"))
+					      :depends-on ("package" "utilities" "path"))
 				       (:file "path"
 					      :depends-on ("package"))
 				       (:file "pen"
