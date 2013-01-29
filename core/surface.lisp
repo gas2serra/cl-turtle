@@ -25,10 +25,17 @@
     :accessor surface-color
     :type cl-colors:rgb
     :documentation "the color of the surface")
-   (turtles
+   (turtle
     :initform nil
-    :reader surface-turtles
-    :documentation "turtles playing in this surface")
+    :initarg :turtle
+    :reader surface-turtle
+    :type turtle
+    :documentation "the turtle playing in this surface")
+   (trail 
+    :initform nil
+    :type path
+    :reader surface-trail
+    :documentation "an incomplete path")
    (paths
     :initform nil
     :type list
@@ -42,22 +49,8 @@
 
 ; initializing
 (defmethod initialize-instance :after ((surface surface) &key)
-  (surface-clear surface))
-(defgeneric surface-resize (surface width height)
-  (:method ((surface surface) width height)
-    (setf (slot-value surface 'width) width)
-    (setf (slot-value surface 'height) height)))
-
-; turtles adding and removing
-(defgeneric surface-add-turtle (surface turtle)
-  (:method ((surface surface) turtle)
-    (push turtle (slot-value surface 'turtles))
-    (setf (slot-value turtle 'surface) surface)))
-(defgeneric surface-remove-turtle (surface turtle)
-  (:method ((surface surface) turtle)
-    (setf (slot-value surface 'turtles)
-	  (delete turtle (slot-value surface 'turtles)))
-    (setf (slot-value turtle 'surface) nil)))
+  (setf (slot-value (surface-turtle surface) 'surface) surface)
+  nil)
 
 ; paths adding
 (defgeneric surface-add-path (surface path)
@@ -66,17 +59,35 @@
 (defun surface-ordered-paths (surface)
   (reverse (surface-paths surface)))
 
+; incomplete path
+(defgeneric surface-clear-trail (surface)
+  (:method ((surface surface))
+    (setf (slot-value surface 'trail) nil)))
+(defgeneric surface-add-point-into-trail (surface x y)
+  (:method ((surface surface) x y)
+    (path-add-point (surface-trail surface) (list x y))))
+(defgeneric surface-new-trail (surface pen x y)
+  (:method ((surface surface) pen x y)
+    (setf (slot-value surface 'trail) 
+	  (make-instance 'path :pen pen
+			 :points (list (list x y))))))
+(defgeneric surface-trail-completed (surface)
+  (:method ((surface surface))
+    (let ((path (surface-trail surface)))
+      (when path
+	(surface-clear-trail surface)
+	(surface-add-path surface path)))))
+
+    
 ; clearing and saving
 (defgeneric surface-clear (surface)
   (:method ((surface surface))
     (setf (slot-value surface 'paths) nil)
-    (dolist (turtle (surface-turtles surface) nil)
-      (turtle-clear-trail turtle))))
+    (surface-clear-trail surface)))
 (defgeneric surface-reset (surface)
   (:method ((surface surface))
     (surface-clear surface)
-    (dolist (turtle (surface-turtles surface) nil)
-      (turtle-reset turtle))))
+    (turtle-reset (surface-turtle surface))))
 (defgeneric surface-save-as (surface filename)
   (:method ((surface surface) filename)
     (let ((fn (gethash (pathname-type (pathname filename)) *ext->save-as-fn*)))
@@ -87,6 +98,5 @@
 ; destroing
 (defgeneric surface-destroy (surface)
   (:method ((surface surface))
-    (dolist (turtle (surface-turtles surface))
-      (setf (slot-value turtle 'surface) nil))
-    (setf (slot-value surface 'turtles) nil)))
+    (setf (slot-value (surface-turtle surface) 'surface) nil)
+    (setf (slot-value surface 'turtle) nil)))

@@ -7,5 +7,11 @@ clisp:
 sbcl-x11:
 	sbcl --load "test-x11-backend"
 
-clisp-x11:
-	clisp -i test-x11-backend.lisp
+sbcl-svg:
+	sbcl --load "test-svg-backend"
+
+clisp-svg:
+	clisp -i test-svg-backend.lisp
+
+ecl-svg:
+	/opt/common-lisp/bin/ecl -load test-svg-backend.lisp

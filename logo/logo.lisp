@@ -17,13 +17,16 @@
   "Create a surface wuth one turtle"
   (if *surface*
       (turtle-destroy))
-  (setf *surface* (make-instance *surface-class* :width width :height height))
-  (setf *turtle* (make-instance *turtle-class*))
-  (turtle:surface-add-turtle *surface* *turtle*))
+  (setf *surface* (make-instance *surface-class* 
+				 :turtle (make-instance *turtle-class*) 
+				 :width width 
+				 :height height))
+  (setf *turtle* (turtle:surface-turtle *surface*)))
 
 (defun turtle-destroy ()
   "Destroy the surface and all its turtles"
-  (turtle:surface-destroy *surface*)
+  (when *surface* 
+    (turtle:surface-destroy *surface*))
   (setf *surface* nil)
   (setf *turtle* nil))
 
@@ -77,6 +80,11 @@
   "Puts down the pen of the turtle" 
   (pull-pen :down turtle))
 
+; speed
+(defun set-speed (s &optional (turtle *turtle*))
+  "Set the speed of the turtle"
+  (setf (turtle:turtle-speed turtle) s))
+
 ; status
 (defun x-cor (&optional (turtle *turtle*))
   "Returns the x coordinate of the turtle"
@@ -93,6 +101,9 @@
 (defun pos (&optional (turtle *turtle*))
   "Returns the position of the turtle"
   (list (x-cor turtle) (y-cor turtle)))
+(defun get-speed (&optional (turtle *turtle*))
+  "Returns the speed of the turtle"
+  (turtle:turtle-speed turtle))
 (defun state (&optional (turtle *turtle*))
   "Returns the full state of the turtle"
   (list :x (x-cor turtle) :y (y-cor turtle) :heading (heading turtle) 
@@ -106,7 +117,7 @@
     (- (if (>= y 0.0) angle (- 360 angle)) (heading turtle))))
 (defun distance (x y &optional (turtle *turtle*))
   "Returns the distance from the turtle to (x,y)"
-  (points-distance x y (x-cor turtle) (y-cor turtle)))
+  (turtle:points-distance x y (x-cor turtle) (y-cor turtle)))
 
 ; language macros
 (defmacro repeat (n &rest body)
@@ -143,7 +154,6 @@
   "Create a new pen style"
   (apply #'turtle:pen-clone pen props))
 (defun set-background-color (color)
-  "Set the backgound color as rgb of th pen"
+  "Set the backgound color as rgb"
   (setf (turtle:surface-color *surface*) color))
-
 

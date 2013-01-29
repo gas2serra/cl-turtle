@@ -29,28 +29,32 @@
 ;
 ; setting cairo stroke style
 ;
-(defun cairo-set-color (color)
+(defun cairo-set-color (color alpha)
   (ctypecase color
-    (cl-colors:rgba (cl-cairo2:set-source-rgba (cl-colors:red color) 
-					       (cl-colors:green color) 
-					       (cl-colors:blue color)
-					       (cl-colors:alpha color)))
-    (cl-colors:rgb (cl-cairo2:set-source-rgb (cl-colors:red color) 
-					    (cl-colors:green color) 
-					    (cl-colors:blue color)))
+    (cl-colors:rgb 
+     (if (< alpha 1.0)		  
+	 (cl-cairo2:set-source-rgba (cl-colors:rgb-red color) 
+				    (cl-colors:rgb-green color) 
+				    (cl-colors:rgb-blue color)
+				    alpha)
+	 (cl-cairo2:set-source-rgb (cl-colors:rgb-red color) 
+				   (cl-colors:rgb-green color) 
+				   (cl-colors:rgb-blue color))))
     (list
      (let ((n (length color)))
      (ccase n
-       (4 (cl-cairo2:set-source-rgba (first color) 
-				     (second color) 
-				     (third color)
-				     (fourth color)))
-       (3 (cl-cairo2:set-source-rgb (first color) 
-				    (second color) 
-				    (third color))))))))
+       (3 
+	(if (< alpha 1.0)		  
+	    (cl-cairo2:set-source-rgba (first color) 
+				       (second color) 
+				       (third color)
+				       alpha)
+	    (cl-cairo2:set-source-rgb (first color) 
+				      (second color) 
+				      (third color)))))))))
 
 (defun cairo-set-pen (pen)
-  (cairo-set-color (cl-turtle:pen-color pen))
+  (cairo-set-color (cl-turtle:pen-color pen) (cl-turtle:pen-alpha pen))
   (cl-cairo2:set-operator :over)
   (cl-cairo2:set-line-width (cl-turtle:pen-width pen))
   (cl-cairo2:set-line-cap (cl-turtle:pen-line-cap pen))

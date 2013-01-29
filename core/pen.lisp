@@ -2,7 +2,8 @@
 
 ; default values
 (defconstant +default-pen-width+ 2)
-(defconstant +default-pen-color+ (cl-colors:add-alpha cl-colors:+darkgoldenrod+ 0.5))
+(defconstant +default-pen-color+ cl-colors:+darkgoldenrod+)
+(defconstant +default-pen-alpha+ 0.5)
 (defconstant +default-pen-line-cap+ :butt)
 (defconstant +default-pen-line-join+ :miter)
 (defconstant +default-pen-miter-limit+ 4)
@@ -21,8 +22,13 @@
    (color :initform +default-pen-color+
 	  :initarg :color
 	  :reader pen-color
-	  :type (or cl-colors:rgba cl-colors:rgb list)
+	  :type (or cl-colors:rgb list)
 	  :documentation "the line color")
+   (alpha :initform +default-pen-alpha+
+	  :initarg :alpha
+	  :reader pen-alpha
+	  :type integer
+	  :documentation "the alpha channel of the color")
    (line-cap :initform +default-pen-line-cap+
 	     :initarg :line-cap
 	     :reader pen-line-cap
@@ -52,14 +58,15 @@
 
 (defmethod print-object ((obj pen) stream)
   (print-unreadable-object (obj stream :type t)
-    (with-slots (width color line-cap line-join miter-limit dash-array dash-offset) obj
-      (format stream "width: ~a  color: ~a  line-cap: ~a  line-join: ~a  miter-limit: ~a  dash-array: ~a  dash-offset: ~a" width color line-cap line-join miter-limit dash-array dash-offset))))
+    (with-slots (width color alpha line-cap line-join miter-limit dash-array dash-offset) obj
+      (format stream "width: ~a  color: ~a alpha: ~a line-cap: ~a  line-join: ~a  miter-limit: ~a  dash-array: ~a  dash-offset: ~a" width color alpha line-cap line-join miter-limit dash-array dash-offset))))
 
 (defun pen-get-attribute (pen attr)
   "Returns the value of the given attribute"
   (case attr
     (:width (pen-width pen))
     (:color (pen-color pen))
+    (:alpha (pen-alpha pen))
     (:line-cap (pen-line-cap pen))
     (:line-join (pen-line-join pen))
     (:miter-limit (pen-miter-limit pen))
@@ -75,6 +82,8 @@
       (setf (getf p :width) (pen-width pen)))
     (when (null (getf props :color))
       (setf (getf p :color) (pen-color pen)))
+    (when (null (getf props :alpha))
+      (setf (getf p :alpha) (pen-alpha pen)))
     (when (null (getf props :line-cap))
       (setf (getf p :line-cap) (pen-line-cap pen)))
     (when (null (getf props :line-join))

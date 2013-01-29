@@ -4,13 +4,8 @@
 ; A turtle that display its movement into the console
 ;
 
-(defclass x11-turtle (cairo-turtle)
+(defclass x11-turtle (turtle:turtle)
   ())
 
 
-(defmethod turtle:turtle-clear-trail :after ((turtle x11-turtle))
-  (x11-surface-update (turtle-surface turtle)))
 
-(defmethod turtle:turtle-add-point-into-trail :after ((turtle x11-turtle))
-  (x11-surface-update (turtle-surface turtle)))
-  

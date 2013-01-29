@@ -11,16 +11,16 @@
    surface-width
    surface-height
    surface-color
-   surface-turtles
+   surface-turtle
+   surface-trail
    ; primitives
-   surface-resize
-   surface-add-turtle
-   surface-remove-turtle
    surface-clear
    surface-reset
    surface-save-as
    surface-destroy
    surface-add-path
+   surface-clear-trail
+   surface-add-point-into-trail
    ; utilities
    surface-ordered-paths
 
@@ -34,7 +34,8 @@
    turtle-y
    turtle-heading
    turtle-pen-position
-   turtle-pen   
+   turtle-pen  
+   turtle-speed
    turtle-surface
    turtle-trail
    ; primitives
@@ -54,6 +55,7 @@
    pen
    pen-width
    pen-color
+   pen-alpha
    pen-line-cap
    pen-line-join
    pen-miter-limit
@@ -66,6 +68,7 @@
    ;
    path
    path-pen
+   path-points
    path-ordered-points
 
    ; utility

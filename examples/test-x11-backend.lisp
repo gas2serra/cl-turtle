@@ -4,12 +4,14 @@
 
 (defvar *ext* "png")
 (defvar *sleep-secs* 0)
+(defvar *speed* -1)
 
 (load "test-examples")
 
 (let ((*turtle-class* 'cl-x11-turtle:x11-turtle)
       (*surface-class* 'cl-x11-turtle:x11-surface)
-      (*sleep-secs* 3))
+      (*sleep-secs* 1)
+      (*speed* 1000))
   (run))
 
 #+ sbcl

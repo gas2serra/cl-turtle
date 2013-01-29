@@ -1,4 +1,4 @@
-(asdf:operate 'asdf:load-op 'cl-cairo-turtle)
+(asdf:operate 'asdf:load-op 'cl-svg-turtle)
 
 (in-package :cl-logo-user)
 
@@ -16,4 +16,6 @@
 #+ sbcl
 (SB-EXT:QUIT)
 #+ clisp
+(ext:quit)
+#+ ecl
 (ext:quit)

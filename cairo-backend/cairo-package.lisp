@@ -2,8 +2,7 @@
   (:use :cl-turtle :common-lisp)
   (:nicknames :cairo-turtle)
   (:export 
-   cairo-turtle
-   cairo-surface   
-   cairo-surface-context
-   cairo-surface-surface
+   cairo-plot-path
+   cairo-set-color
+   cairo-set-pen
    ))

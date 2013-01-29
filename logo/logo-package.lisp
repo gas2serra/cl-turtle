@@ -18,12 +18,15 @@
    pull-pen
    pen-up
    pen-down
+   ; speed
+   set-speed
    ; status
    pos
    x-cor
    y-cor
    heading
    pen-pos
+   get-speed
    ; drawing
    pen
    pen-attr
