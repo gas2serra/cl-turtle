@@ -73,6 +73,9 @@
   (call-next-method)
   (with-cairo-surface (surface) 
     (cairo-turtle::cairo-plot-path path (surface-width surface) (surface-height surface)))
+  (with-cairo-tmp-surface (surface)
+    (cairo:set-operator :clear)
+    (cairo:paint))
   (x11-surface-update surface))
 
 
@@ -83,16 +86,8 @@
     (cairo:paint)
     (cairo-turtle::cairo-plot-path (cl-turtle:surface-trail surface) 
 				   (surface-width surface) 
-				   (surface-height surface))))
-
-(defmethod turtle:surface-add-point-into-trail :after ((surface x11-surface) x y)
+				   (surface-height surface)))
   (x11-surface-update surface))
-
-(defmethod turtle:surface-clear-trail ((surface x11-surface))
-  (call-next-method)
-  (with-cairo-tmp-surface (surface)
-    (cairo:set-operator :clear)
-    (cairo:paint)))
 
 
 ; updating
@@ -106,14 +101,14 @@
     (cairo:rectangle 0 0 (surface-width surface) (surface-height surface))
     (cairo-turtle::cairo-set-color (surface-color surface) 1.0)
     (cairo:set-operator :source)
-    ;(cairo:fill-preserve)
-    (cairo:paint)
+    (cairo:fill-preserve)
+    ;(cairo:paint)
     (cairo:rectangle 0 0 (surface-width surface) (surface-height surface))
     (cairo:set-source-surface 
      (cairo-surface-surface surface) 0 0)
     (cairo:set-operator :over)
-    (cairo:paint)
-    ;(cairo:fill-preserve)
+    ;(cairo:paint)
+    (cairo:fill-preserve)
     (cairo:rectangle 0 0 (surface-width surface) (surface-height surface))
     (cairo:set-source-surface 
      (cairo-surface-tmp-surface surface) 0 0)
