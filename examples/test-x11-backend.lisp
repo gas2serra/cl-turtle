@@ -8,7 +8,7 @@
 
 (load "test-examples")
 
-(let ((*turtle-class* 'cl-x11-turtle:x11-turtle)
+(let ((*turtle-class* 'cl-turtle:turtle)
       (*surface-class* 'cl-x11-turtle:x11-surface)
       (*sleep-secs* 1)
       (*speed* 1000))

@@ -4,6 +4,7 @@
 (defconstant +default-surface-width+ 400)
 (defconstant +default-surface-height+ 400)
 (defconstant +default-surface-color+ cl-colors:+whitesmoke+)
+(defconstant +default-sorface-mode+ :batch)
 
 ;
 ; A surface where turtles can play
@@ -25,6 +26,11 @@
     :accessor surface-color
     :type cl-colors:rgb
     :documentation "the color of the surface")
+   (mode 
+    :initform +default-sorface-mode+
+    :initarg :mode
+    :accessor surface-mode
+    :type (member :batch :interactive))
    (turtle
     :initform nil
     :initarg :turtle

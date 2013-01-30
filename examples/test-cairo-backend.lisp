@@ -2,7 +2,7 @@
 
 (in-package :cl-logo-user)
 
-(defvar *ext* "svg")
+(defvar *ext* "png")
 (defvar *sleep-secs* 0)
 (defvar *speed* -1)
 

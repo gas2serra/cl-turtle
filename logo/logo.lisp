@@ -41,7 +41,7 @@
 (defun backward (len &optional (turtle *turtle*))
   "Moves the turtle backwards"
   (assert (>= len 0))
-  (move (- len turtle)))
+  (move (- len) turtle))
 
 ; turning
 (defun turn (degree &optional (turtle *turtle*))

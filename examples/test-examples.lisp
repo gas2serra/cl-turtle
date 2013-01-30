@@ -108,10 +108,40 @@
   (with-floor #p"pictures/color02"
 	      (color-picture cl-colors:+gold+ cl-colors:+red+ 50)))
 
+
+
+(defun draw-tree (d &key (depth 10) (maxdepth 10) (alpha 20) (gamma 0.5) (c1 cl-colors:+saddlebrown+) (c2 cl-colors:+green+))
+  (unless (eql depth 0)
+    (change-pen (clone-pen :color (cl-colors:rgb-combination c2 c1 (/ depth maxdepth))))
+    (pen-down)
+    (forward d)
+    (pen-up)
+    (turn alpha)
+    (draw-tree (* gamma d) :depth (- depth 1) :maxdepth maxdepth :alpha alpha :gamma gamma :c1 c1 :c2 c2)
+    (turn (- (* 2 alpha)))
+    (draw-tree (* gamma d) :depth (- depth 1) :maxdepth maxdepth :alpha alpha :gamma gamma :c1 c1 :c2 c2)
+    (turn alpha)
+    (backward d)))
+
+    
+(defun test-tree ()
+ (with-floor #p"pictures/tree01"
+	     (change-pen (new-pen :width 5 :alpha 0.9))
+	     (goto 0 (- 150))
+	     (draw-tree 100 :depth 10 :maxdepth 10 :gamma 0.7))
+  (with-floor #p"pictures/tree02"
+	      (change-pen (new-pen :width 5 :alpha 0.9))
+	      (goto 0 (- 150))
+	      (draw-tree 100 :depth 12 :maxdepth 12 :gamma 0.7 :alpha 40)))
+      
+
+
 (defun run ()
   (test-line-cap)
   (test-line-join)
   (test-width)
   (test-dash)
-  (test-color))
+  (test-color)
+  (test-tree))
+
 

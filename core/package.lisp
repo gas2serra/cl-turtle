@@ -11,6 +11,7 @@
    surface-width
    surface-height
    surface-color
+   surface-mode
    surface-turtle
    surface-trail
    ; primitives
@@ -37,7 +38,6 @@
    turtle-pen  
    turtle-speed
    turtle-surface
-   turtle-trail
    ; primitives
    turtle-move
    turtle-turn
@@ -46,8 +46,6 @@
    turtle-home
    turtle-turn-to
    turtle-reset
-   turtle-add-point-into-trail
-   turtle-clear-trail
 
    ;
    ; pen

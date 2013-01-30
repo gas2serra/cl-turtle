@@ -4,8 +4,6 @@
 ; saving functions
 ;
 
-
-
 (defun svg-save-as-svg (surface filename)
   (let ((scene (svg:make-svg-toplevel 'svg:svg-1.1-toplevel 
 				      :height (surface-height surface) 
@@ -30,10 +28,6 @@
       (svg-plot-path group path (surface-width surface) (surface-height surface)))
     (svg-plot-path group (surface-trail surface)
 		   (surface-width surface) (surface-height surface))))
-
-
-
-	  
 
 ;
 ; register saving functions

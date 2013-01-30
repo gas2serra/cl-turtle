@@ -5,7 +5,7 @@
 
 (defsystem cl-turtle
     :author "Alessandro Serra (gas2serra@gmail.com)"
-    :licence "GPL"
+    :licence "GPLv3"
     :version "0.1"
     :components (
 		 (:module "core"

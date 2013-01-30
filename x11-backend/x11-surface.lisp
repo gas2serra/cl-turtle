@@ -34,6 +34,7 @@
 
 (defmethod initialize-instance ((surface x11-surface) &key)
   (call-next-method)
+  (setf (surface-mode surface) :interactive)
   (setf (slot-value surface 'surface) 
 	(cl-cairo2:create-image-surface :ARGB32
 					(surface-width surface)
@@ -107,15 +108,21 @@
 
 (defgeneric cairo-surface-paint-to (surface)
   (:method ((surface x11-surface))
+    (cairo:rectangle 0 0 (surface-width surface) (surface-height surface))
     (cairo-turtle::cairo-set-color (surface-color surface) 1.0)
     (cairo:set-operator :source)
+    ;(cairo:fill-preserve)
     (cairo:paint)
+    (cairo:rectangle 0 0 (surface-width surface) (surface-height surface))
     (cairo:set-source-surface 
      (cairo-surface-surface surface) 0 0)
     (cairo:set-operator :over)
     (cairo:paint)
+    ;(cairo:fill-preserve)
+    (cairo:rectangle 0 0 (surface-width surface) (surface-height surface))
     (cairo:set-source-surface 
      (cairo-surface-tmp-surface surface) 0 0)
     (cairo:set-operator :over)
+    ;(cairo:fill-preserve)
     (cairo:paint)))
 
