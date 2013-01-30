@@ -27,6 +27,7 @@
    heading
    pen-pos
    get-speed
+   state
    ; drawing
    pen
    pen-attr
@@ -43,13 +44,17 @@
    set-background-color
    save-as
    reset
+   mode
+   set-mode
 
    ; configuration
    *surface-class*
    *turtle-class*
    ; init
-   turtle-init
-   turtle-destroy
+   surface-init
+   surface-destroy
+   with-surface
+   with-image
    ))
 
 (defpackage :cl-logo-user

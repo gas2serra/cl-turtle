@@ -6,7 +6,7 @@
 (defconstant +default-turtle-home-heading+ 90)
 (defconstant +default-turtle-home-pen-position+ :up)
 (defconstant +default-turtle-home-pen+ (make-instance 'pen))
-(defconstant +default-turtle-speed+ -1)
+(defconstant +default-turtle-speed+ 1000)
 
 
 ;
@@ -25,7 +25,7 @@
 	    :initarg :heading
 	    :reader turtle-heading
 	    :documentation "the heading of the turtle")
-   (pen-position :initform :+default-turtle-home-pen-position+
+   (pen-position :initform +default-turtle-home-pen-position+
 		 :initarg :pen-position
 		 :reader turtle-pen-position
 		 :type (member :down :up)

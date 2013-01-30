@@ -1,5 +1,7 @@
 (in-package :cl-logo-user)
 
+(defvar *ext* "png")
+
 (defun line-cap-picture ()
   (repeat 8
 	  (forward 20)
@@ -57,59 +59,6 @@
     (pen-up)
     (turn (/ 270 n))))
 
-
-(defmacro with-floor (filename &body code)
-  `(progn
-     (turtle-init)
-     (set-speed *speed*)
-     ,@code
-     (save-as (merge-pathnames ,filename (make-pathname :type *ext*)))
-     (sleep *sleep-secs*)
-     (turtle-destroy)))
-
-
-(defun test-line-cap ()
-  (with-floor #p"pictures/line-cap-round"
-	      (change-pen (new-pen :width 10 :line-cap :round))
-	      (format t "~A~%" (pen))
-	      (line-cap-picture))
-  (with-floor #p"pictures/line-cap-butt"
-	      (change-pen (new-pen :width 10 :line-cap :butt))
-	      (line-cap-picture))
-  (with-floor #p"pictures/line-cap-square"
-	      (change-pen (new-pen :width 10 :line-cap :square))
-	      (line-cap-picture)))
-
-(defun test-line-join ()
-  (with-floor #p"pictures/line-join-round"
-	      (change-pen (new-pen :width 10 :line-join :round))
-	      (line-join-picture))
-  (with-floor #p"pictures/line-join-miter"
-	      (change-pen (new-pen :width 10 :line-join :miter))
-	      (line-join-picture))
-  (with-floor #p"pictures/line-join-bevel"
-	      (change-pen (new-pen :width 10 :line-join :bevel))
-	      (line-join-picture)))
-
-(defun test-width ()
-  (with-floor #p"pictures/width"
-	      (change-pen (new-pen :width 1 :line-join :round))
-	      (width-picture)))
-
-(defun test-dash ()
-  (with-floor #p"pictures/dash"
-	      (change-pen (new-pen :width 5 :dash-array #(10 5 10 2) :dash-offset 2))
-	      (set-background-color cl-colors:+yellow+)
-	      (dash-picture)))
-
-(defun test-color ()
-  (with-floor #p"pictures/color01"
-	      (color-picture cl-colors:+blueviolet+ cl-colors:+blue1+ 50))
-  (with-floor #p"pictures/color02"
-	      (color-picture cl-colors:+gold+ cl-colors:+red+ 50)))
-
-
-
 (defun draw-tree (d &key (depth 10) (maxdepth 10) (alpha 20) (gamma 0.5) (c1 cl-colors:+saddlebrown+) (c2 cl-colors:+green+))
   (unless (eql depth 0)
     (change-pen (clone-pen :color (cl-colors:rgb-combination c2 c1 (/ depth maxdepth))))
@@ -123,17 +72,55 @@
     (turn alpha)
     (backward d)))
 
+(defun test-line-cap ()
+  (with-image (#p"pictures/line-cap-round" :ext *ext*)
+    (change-pen (new-pen :width 10 :line-cap :round))
+    (line-cap-picture))
+  (with-image (#p"pictures/line-cap-butt" :ext *ext*)
+    (change-pen (new-pen :width 10 :line-cap :butt))
+    (line-cap-picture))
+  (with-image (#p"pictures/line-cap-square" :ext *ext*)
+    (change-pen (new-pen :width 10 :line-cap :square))
+    (line-cap-picture)))
+
+(defun test-line-join ()
+  (with-image (#p"pictures/line-join-round" :ext *ext*)
+    (change-pen (new-pen :width 10 :line-join :round))
+    (line-join-picture))
+  (with-image (#p"pictures/line-join-miter" :ext *ext*)
+    (change-pen (new-pen :width 10 :line-join :miter))
+    (line-join-picture))
+  (with-image (#p"pictures/line-join-bevel" :ext *ext*)
+    (change-pen (new-pen :width 10 :line-join :bevel))
+    (line-join-picture)))
+
+(defun test-width ()
+  (with-image (#p"pictures/width" :ext *ext*)
+    (change-pen (new-pen :width 1 :line-join :round))
+    (width-picture)))
+
+(defun test-dash ()
+  (with-image (#p"pictures/dash" :ext *ext*)
+    (change-pen (new-pen :width 5 :dash-array #(10 5 10 2) :dash-offset 2))
+    (set-background-color cl-colors:+yellow+)
+    (dash-picture)))
+
+(defun test-color ()
+  (with-image (#p"pictures/color01" :ext *ext*)
+    (color-picture cl-colors:+blueviolet+ cl-colors:+blue1+ 50))
+  (with-image (#p"pictures/color02" :ext *ext*)
+    (color-picture cl-colors:+gold+ cl-colors:+red+ 50)))
     
 (defun test-tree ()
- (with-floor #p"pictures/tree01"
-	     (change-pen (new-pen :width 5 :alpha 0.9))
-	     (goto 0 (- 150))
-	     (draw-tree 100 :depth 10 :maxdepth 10 :gamma 0.7))
-  (with-floor #p"pictures/tree02"
-	      (change-pen (new-pen :width 5 :alpha 0.9))
-	      (goto 0 (- 150))
-	      (draw-tree 100 :depth 12 :maxdepth 12 :gamma 0.7 :alpha 40)))
-      
+  (with-image (#p"pictures/tree0" :ext *ext*)
+    (change-pen (new-pen :width 5 :alpha 0.9))
+    (goto 0 (- 150))
+    (draw-tree 100 :depth 10 :maxdepth 10 :gamma 0.7))
+  (with-image (#p"pictures/tree02" :ext *ext*)
+    (change-pen (new-pen :width 5 :alpha 0.9))
+    (goto 0 (- 150))
+    (draw-tree 100 :depth 12 :maxdepth 12 :gamma 0.7 :alpha 40)))
+
 
 
 (defun run ()
@@ -143,5 +130,3 @@
   (test-dash)
   (test-color)
   (test-tree))
-
-

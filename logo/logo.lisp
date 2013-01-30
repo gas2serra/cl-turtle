@@ -8,22 +8,38 @@
 (defvar *turtle-class* 'turtle:turtle)
 (defvar *surface-class* 'turtle:surface)
 
+
+; macros
+
+(defmacro with-surface ((&key (width 500) (height 400)) &body code)
+  `(progn 
+     (surface-init :width ,width :height ,height)
+     ,@code
+     (surface-destroy)))
+
+(defmacro with-image ((filename &key (width 500) (height 400) (ext nil))  &body code)
+  `(with-surface (:width ,width :height ,height)
+     ,@code
+     ,(if ext 
+	  `(save-as (merge-pathnames ,filename (make-pathname :type ,ext)))
+	  `(save-as ,filename))))
+
 ;
 ; logo's functions
 ;
 
 ; init
-(defun turtle-init (&key (width 500) (height 400))
+(defun surface-init (&key (width 500) (height 400))
   "Create a surface wuth one turtle"
   (if *surface*
-      (turtle-destroy))
+      (surface-destroy))
   (setf *surface* (make-instance *surface-class* 
 				 :turtle (make-instance *turtle-class*) 
 				 :width width 
 				 :height height))
   (setf *turtle* (turtle:surface-turtle *surface*)))
 
-(defun turtle-destroy ()
+(defun surface-destroy ()
   "Destroy the surface and all its turtles"
   (when *surface* 
     (turtle:surface-destroy *surface*))
@@ -114,7 +130,7 @@
   "Returns the angle between the line from turtle position to position specified by (x,y)"
   (let ((angle (turtle:radians->degrees 
 		(acos (/ (- x (x-cor turtle)) (distance x y turtle))))))
-    (- (if (>= y 0.0) angle (- 360 angle)) (heading turtle))))
+    (- (heading turtle) (if (>= y 0.0) angle (- 360 angle)))))
 (defun distance (x y &optional (turtle *turtle*))
   "Returns the distance from the turtle to (x,y)"
   (turtle:points-distance x y (x-cor turtle) (y-cor turtle)))
@@ -132,10 +148,18 @@
   (turtle:surface-clear *surface*))
 (defun reset ()
   "reset the surface"
-  (turtle:surface-reset *surface*))
+  (turtle:surface-reset *surface*)
+  (state))
 (defun save-as (filename)
   "saves the surface as an image"
   (turtle:surface-save-as *surface* filename))
+(defun mode ()
+  "Returns the surface mode (:batch :interactive)"
+  (turtle:surface-mode *surface*))
+(defun set-mode (mode)
+  "Set the surface mode (:batch :interactive)"
+  (setf (turtle:surface-mode *surface*) mode))
+
 
 ; drawing style
 (defun pen (&optional (turtle *turtle*))

@@ -62,7 +62,7 @@
   (call-next-method)
   (with-cairo-surface (surface) 
     (cairo:set-operator :clear)
-    (cairo:set-source-color (surface-color surface))
+    (cairo-turtle::cairo-set-color (surface-color surface) 1.0)
     (cairo:paint))
   (with-cairo-tmp-surface (surface)
     (cairo:set-operator :clear)
@@ -76,13 +76,6 @@
   (x11-surface-update surface))
 
 
-(defmethod turtle:surface-clear-trail :after ((surface x11-surface))
-  ;(x11-surface-update surface))
-  )
-
-(defmethod turtle:surface-add-point-into-trail :after ((surface x11-surface) x y)
-  (x11-surface-update surface))
-  
 (defmethod turtle:surface-add-point-into-trail ((surface x11-surface) x y)
   (call-next-method)
   (with-cairo-tmp-surface (surface)
@@ -92,6 +85,8 @@
 				   (surface-width surface) 
 				   (surface-height surface))))
 
+(defmethod turtle:surface-add-point-into-trail :after ((surface x11-surface) x y)
+  (x11-surface-update surface))
 
 (defmethod turtle:surface-clear-trail ((surface x11-surface))
   (call-next-method)
@@ -125,4 +120,3 @@
     (cairo:set-operator :over)
     ;(cairo:fill-preserve)
     (cairo:paint)))
-

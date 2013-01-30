@@ -2,16 +2,17 @@
 
 (in-package :cl-logo-user)
 
-(defvar *ext* "png")
-(defvar *sleep-secs* 0)
-(defvar *speed* -1)
-
 (load "test-examples")
 
-(let ((*turtle-class* 'cl-turtle:turtle)
-      (*surface-class* 'cl-turtle:surface)
-      (*sleep-secs* 0))
+(let ((*ext* "png"))
   (run))
+(let ((*ext* "svg"))
+  (run))
+(let ((*ext* "pdf"))
+  (run))
+(let ((*ext* "ps"))
+  (run))
+
 
 #+ sbcl
 (SB-EXT:QUIT)
