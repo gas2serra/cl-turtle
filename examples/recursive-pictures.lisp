@@ -1,0 +1,116 @@
+(require 'cl-cairo-turtle)
+
+(in-package :cl-logo-user)
+
+(defun c-curve (size level)
+  (if (= level 0)
+      (forward size)
+      (progn
+	(turn 45)
+	(c-curve (* size (sqrt 0.5)) (- level 1))
+	(turn -90)
+	(c-curve (* size (sqrt 0.5)) (- level 1))
+	(turn 45))))
+
+(defun sierpinski-triangle (size level)
+    (unless (= level 0)
+      (repeat 3
+	      (sierpinski-triangle (/ size 2) (- level 1))
+	      (forward size)
+	      (turn 120))))
+
+(defun snowflake (size level)
+  (if (= level 0)
+      (forward size)
+      (progn
+	(snowflake (/ size 3) (- level 1))
+	(turn 60)
+	(snowflake (/ size 3) (- level 1))
+	(turn -120)
+	(snowflake (/ size 3) (- level 1))
+	(turn 60)
+	(snowflake (/ size 3) (- level 1)))))
+
+(defun left-dragon (size level)
+  (if (= level 0) 
+      (forward size)
+      (progn 
+	(left-dragon size (- level 1))
+	(turn 90)
+	(right-dragon size (- level 1)))))
+
+(defun right-dragon (size level)
+  (if (= level 0) 
+      (forward size)
+      (progn 
+	(left-dragon size (- level 1))
+	(turn -90)
+	(right-dragon size (- level 1)))))
+
+(defun peano (size level &optional (alpha 90))
+  (unless (< level 0)
+    (progn
+      (turn (- alpha))
+      (peano size (- level 1) (- alpha))
+      (forward size)
+      (peano size (- level 1) alpha)
+      (forward size)
+      (peano size (- level 1) (- alpha))
+      (turn alpha))))
+
+(defun c-curve-picture-01 ()
+  (with-image ("pictures/rp-c-curve-01.png" :width 500 :height 400)
+    (change-pen (new-pen :width 1 :color cl-colors:+darkblue+))
+    (turn 90)
+    (goto -100 50)
+    (pen-down)
+    (c-curve 200 12)
+    (pen-up)))
+
+  
+(defun sierpinski-triangle-picture-01 ()
+  (with-image ("pictures/rp-sierpinski-triangle-01.png" :width 500 :height 400)
+    (change-pen (new-pen :width 1 :color cl-colors:+darkblue+))
+    (turn -90)
+    (goto 150 -150)
+    (pen-down)
+    (sierpinski-triangle 300 7)
+    (pen-up)))
+
+(defun snowflake-picture-01 ()
+  (with-image ("pictures/rp-snowflake-01.png" :width 500 :height 400)
+    (change-pen (new-pen :width 1 :color cl-colors:+darkblue+))
+    (turn -90)
+    (goto 200 -150)
+    (pen-down)
+    (snowflake 400 5)
+    (pen-up)))
+
+(defun dragon-picture-01 ()
+  (with-image ("pictures/rp-dragon-01.png" :width 500 :height 400)
+    (change-pen (new-pen :width 1 :color cl-colors:+darkblue+))
+    (turn -90)
+    (goto -50 -100)
+    (pen-down)
+    (left-dragon 5 11)
+    (pen-up)))
+
+(defun peano-picture-01 ()
+  (with-image ("pictures/rp-peano-01.png" :width 500 :height 400)
+    (change-pen (new-pen :width 1 :color cl-colors:+darkblue+))
+    (turn -90)
+    (goto 100 100)
+    (pen-down)
+    (peano 3 7)
+    (pen-up)))
+
+
+(defun run ()
+  (c-curve-picture-01)
+  (sierpinski-triangle-picture-01)
+  (snowflake-picture-01)
+  (dragon-picture-01)
+  (peano-picture-01)
+  )
+
+(run)
