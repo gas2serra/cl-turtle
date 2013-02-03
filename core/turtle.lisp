@@ -66,6 +66,10 @@
   (:method ((turtle turtle) degree)
     (setf (slot-value turtle 'heading) 
 	  (normalize-angle (- (turtle-heading turtle) degree)))))
+
+(defmethod (setf turtle-pen) :before (pen (turtle turtle))
+  (if (eq (turtle-pen-position turtle) :down)
+      (error "Impossible to set the pen of the turtle when the current position of the pen is down")))
 ; goto
 (defgeneric turtle-goto (turtle x y)
   (:documentation "Moves the turtle to the surface coordinates [x y]")
@@ -93,6 +97,8 @@
 (defgeneric turtle-pull-pen (turtle pos)
   (:documentation "Pulls down or up the pen of the turtle")
   (:method ((turtle turtle) pos)
+    (when (eql pos (turtle-pen-position turtle)) 
+      (error "Impossible to pull the pen ~A because it is yet ~A" pos (turtle-pen-position turtle)))
     (when (not (eql pos (turtle-pen-position turtle)))
       (setf (slot-value turtle 'pen-position) pos)
       (if (eq pos :down)
