@@ -1,0 +1,13 @@
+* cl-turtle 
+  - Remove x11-backend
+  - Better support for examples:
+    - web
+    - temp file & system load
+  - Better style
+    - like css
+  - Reorganize sources in more standard way
+  - Adding testing
+  - Adding documentation (automatic)
+  - Adding web app
+  - Adding tikz backend
+
