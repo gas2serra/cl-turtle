@@ -24,7 +24,7 @@
 			   :height (surface-height surface) 
 			   :width (surface-width surface)
 			   :fill (format nil "rgb(~{~a%~^, ~})" (svg-color (surface-color surface)))))
-    (dolist (path (cl-turtle:surface-ordered-paths surface))
+    (dolist (path (cl-turtle.core:surface-ordered-paths surface))
       (svg-plot-path group path (surface-width surface) (surface-height surface)))
     (svg-plot-path group (surface-trail surface)
 		   (surface-width surface) (surface-height surface))))
@@ -34,6 +34,6 @@
 ;
 (progn
   (setf 
-   (gethash "svg" turtle::*ext->save-as-fn*) 
+   (gethash "svg" turtle.core::*ext->save-as-fn*) 
    #'svg-save-as-svg))
   

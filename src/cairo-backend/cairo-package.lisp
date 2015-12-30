@@ -1,5 +1,5 @@
 (defpackage :cl-cairo-turtle
-  (:use :cl-turtle :common-lisp)
+  (:use :cl-turtle.core :common-lisp)
   (:nicknames :cairo-turtle)
   (:export 
    cairo-plot-path

@@ -1,6 +1,6 @@
 (asdf:operate 'asdf:load-op 'cl-svg-turtle)
 
-(in-package :cl-logo-user)
+(in-package :cl-turtle)
 
 (load "test-examples")
 

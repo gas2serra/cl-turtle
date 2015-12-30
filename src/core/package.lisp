@@ -1,6 +1,6 @@
-(defpackage :cl-turtle
+(defpackage :cl-turtle.core
   (:use :common-lisp)
-  (:nicknames :turtle)
+  (:nicknames :turtle.core)
   (:export
    ;
    ; surface

@@ -1,5 +1,5 @@
 (defpackage :cl-svg-turtle
-  (:use :cl-turtle :common-lisp)
+  (:use :cl-turtle.core :common-lisp)
   (:nicknames :svg-turtle)
   (:export 
    ))

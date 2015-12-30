@@ -1,4 +1,4 @@
-(in-package :cl-turtle)
+(in-package :cl-turtle.core)
 
 (defun degrees->radians (degree)
   "Transforms an angle in degree into radiant"

@@ -10,8 +10,8 @@
   (labels ((x->pos (x) (+ (/ width 2) x))
 	   (y->pos (y) (- (/ height 2) y)))
     (when path 
-      (let ((pen (cl-turtle:path-pen path))
-	    (path (cl-turtle:path-ordered-points path))
+      (let ((pen (cl-turtle.core:path-pen path))
+	    (path (cl-turtle.core:path-ordered-points path))
 	    (svgp (svg:make-path)))
 	(let ((x1 (x->pos (first (car path))))
 	      (y1 (y->pos (second (car path)))))
@@ -22,7 +22,7 @@
 	      (setf x (x->pos (first point)))
 	      (setf y (y->pos (second point)))
 	      (svg:with-path svgp (svg::line-to (round x) (round y))))
-	    (when (< (turtle:points-distance x1 y1 x y) *max-distance-to-close-path*)
+	    (when (< (turtle.core:points-distance x1 y1 x y) *max-distance-to-close-path*)
 	      (svg:with-path svgp (svg:close-path)))))
 	(cl-svg:add-element scene (cl-svg::make-svg-element :path (append (list :d svgp) (svg-pen pen))))))))
 

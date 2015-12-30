@@ -36,7 +36,7 @@
   (let ((cl-cairo2:*context* (cl-cairo2:create-context cairo-surface)))
     (cairo-set-color (surface-color surface) 1.0)
     (cl-cairo2:paint)
-    (dolist (path (cl-turtle:surface-ordered-paths surface))
+    (dolist (path (cl-turtle.core:surface-ordered-paths surface))
       (cairo-plot-path path (surface-width surface) (surface-height surface)))
     (cairo-plot-path (surface-trail surface)
 		     (surface-width surface) (surface-height surface))
@@ -47,12 +47,12 @@
 ;
 (progn
   (setf 
-   (gethash "png" turtle::*ext->save-as-fn*) 
+   (gethash "png" turtle.core::*ext->save-as-fn*) 
    #'cairo-save-as-png 
-   (gethash "pdf" turtle::*ext->save-as-fn*) 
+   (gethash "pdf" turtle.core::*ext->save-as-fn*) 
    #'cairo-save-as-pdf 
-   (gethash "ps" turtle::*ext->save-as-fn*) 
+   (gethash "ps" turtle.core::*ext->save-as-fn*) 
    #'cairo-save-as-ps 
-   (gethash "svg" turtle::*ext->save-as-fn*) 
+   (gethash "svg" turtle.core::*ext->save-as-fn*) 
    #'cairo-save-as-svg))
   

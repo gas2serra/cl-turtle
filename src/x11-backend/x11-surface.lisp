@@ -3,7 +3,7 @@
 ;
 ; A gtk surface
 ;
-(defclass x11-surface (turtle:surface)
+(defclass x11-surface (turtle.core:surface)
   ((surface
     :initform nil
     :reader cairo-surface-surface
@@ -50,7 +50,7 @@
   (setf (slot-value surface 'context2) 
 	(cl-cairo2:create-xlib-image-context (surface-width surface) (surface-height surface) :display-name ":0")))
 
-(defmethod cl-turtle:surface-destroy ((surface x11-surface))
+(defmethod cl-turtle.core:surface-destroy ((surface x11-surface))
   (call-next-method)
   (cl-cairo2:destroy (cairo-surface-surface surface))
   (cl-cairo2:destroy (cairo-surface-context surface))
@@ -58,7 +58,7 @@
   (cl-cairo2:destroy (cairo-surface-tmp-context surface))
   (cl-cairo2:destroy (slot-value surface 'context2)))
 
-(defmethod cl-turtle:surface-clear ((surface x11-surface))
+(defmethod cl-turtle.core:surface-clear ((surface x11-surface))
   (call-next-method)
   (with-cairo-surface (surface) 
     (cairo:set-operator :clear)
@@ -69,7 +69,7 @@
     (cairo:paint))
   (x11-surface-update surface))
 
-(defmethod cl-turtle:surface-add-path ((surface x11-surface) path)
+(defmethod cl-turtle.core:surface-add-path ((surface x11-surface) path)
   (call-next-method)
   (with-cairo-surface (surface) 
     (cairo-turtle::cairo-plot-path path (surface-width surface) (surface-height surface)))
@@ -79,12 +79,12 @@
   (x11-surface-update surface))
 
 
-(defmethod turtle:surface-add-point-into-trail ((surface x11-surface) x y)
+(defmethod turtle.core:surface-add-point-into-trail ((surface x11-surface) x y)
   (call-next-method)
   (with-cairo-tmp-surface (surface)
     (cairo:set-operator :clear)
     (cairo:paint)
-    (cairo-turtle::cairo-plot-path (cl-turtle:surface-trail surface) 
+    (cairo-turtle::cairo-plot-path (cl-turtle.core:surface-trail surface) 
 				   (surface-width surface) 
 				   (surface-height surface)))
   (x11-surface-update surface))

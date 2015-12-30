@@ -30,13 +30,19 @@
 				       (:file "pen"
 					      :depends-on ("package"))
 				       (:file "turtle" 
-					      :depends-on ("utilities" "surface" "path" "pen"))))
-		 (:module "src/logo"
-			  :depends-on ("src/core")
+					      :depends-on ("package" "utilities" "surface" "path" "pen"))))
+		 ;(:module "src/logo"
+		;	  :depends-on ("src/core")
+		;	  :components (
+		;		       (:file "logo-package")
+		;		       (:file "logo" :depends-on ("logo-package"))))
+		 (:module "src"
+			  :depends-on ("src/core" ;"src/logo"
+				       )
 			  :components (
-				       (:file "logo-package")
-				       (:file "logo" :depends-on ("logo-package")))
-			  ))
+				       (:file "cl-turtle")
+				       (:file "api" :depends-on ("cl-turtle"))))
+		 )
     :description ""
     :long-description
     #.(with-open-file (stream (merge-pathnames

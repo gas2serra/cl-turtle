@@ -1,4 +1,4 @@
-(in-package :cl-turtle)
+(in-package :cl-turtle.core)
 
 ; default slots of the surface
 (defconstant +default-surface-width+ 400)

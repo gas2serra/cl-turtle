@@ -1,4 +1,4 @@
-(in-package :cl-turtle)
+(in-package :cl-turtle.core)
 
 ; default values
 (defconstant +default-pen-width+ 2)

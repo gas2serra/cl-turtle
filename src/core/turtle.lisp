@@ -1,4 +1,4 @@
-(in-package :cl-turtle)
+(in-package :cl-turtle.core)
 
 ; default slots of the turtle in the home position
 (defconstant +default-turtle-home-x+ 0)
