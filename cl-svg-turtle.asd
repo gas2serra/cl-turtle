@@ -8,7 +8,7 @@
     :licence "GPLv3"
     :version "0.1"
     :components (
-		 (:module "svg-backend"
+		 (:module "src/svg-backend"
 			  :components (
 				       (:file "svg-package")
 				       (:file "svg-save" 

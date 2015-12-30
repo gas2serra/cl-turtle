@@ -8,7 +8,7 @@
     :licence "GPLv3"
     :version "0.1"
     :components (
-		 (:module "x11-backend"
+		 (:module "src/x11-backend"
 			  :components (
 				       (:file "x11-package")
 				       (:file "x11-surface"

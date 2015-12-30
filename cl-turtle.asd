@@ -1,14 +1,24 @@
-(defpackage #:cl-turtle-system
-  (:use :common-lisp :asdf))
+#|
+  This file is a part of cl-turtle-2d project.
+  Copyright (c) 2015 Alessandro Serra (gas2serra@gmail.com)
+|#
 
-(in-package #:cl-turtle-system)
+#|
+  Author: Alessandro Serra (gas2serra@gmail.com)
+|#
+
+(in-package :cl-user)
+(defpackage cl-turtle-asd
+  (:use :common-lisp :asdf))
+(in-package cl-turtle-asd)
 
 (defsystem cl-turtle
     :author "Alessandro Serra (gas2serra@gmail.com)"
     :licence "GPLv3"
     :version "0.1"
+    :depends-on ("cl-colors")
     :components (
-		 (:module "core"
+		 (:module "src/core"
 			  :components (
 				       (:file "package")
 				       (:file "utilities" 
@@ -21,9 +31,23 @@
 					      :depends-on ("package"))
 				       (:file "turtle" 
 					      :depends-on ("utilities" "surface" "path" "pen"))))
-		 (:module "logo"
+		 (:module "src/logo"
+			  :depends-on ("src/core")
 			  :components (
 				       (:file "logo-package")
 				       (:file "logo" :depends-on ("logo-package")))
-			  :depends-on ("core")))
-    :depends-on ("cl-colors"))
+			  ))
+    :description ""
+    :long-description
+    #.(with-open-file (stream (merge-pathnames
+                             #p"README.markdown"
+                             (or *load-pathname* *compile-file-pathname*))
+			      :if-does-not-exist nil
+			      :direction :input)
+	(when stream
+	  (let ((seq (make-array (file-length stream)
+				 :element-type 'character
+				 :fill-pointer t)))
+	    (setf (fill-pointer seq) (read-sequence seq stream))
+	    seq)))
+    :in-order-to ((test-op (test-op cl-turtle-test))))

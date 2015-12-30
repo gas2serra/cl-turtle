@@ -8,7 +8,7 @@
     :licence "GPLv3"
     :version "0.1"
     :components (
-		 (:module "cairo-backend"
+		 (:module "src/cairo-backend"
 			  :components (
 				       (:file "cairo-package")
 				       (:file "cairo-save" 
