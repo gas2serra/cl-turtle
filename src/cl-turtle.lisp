@@ -8,6 +8,8 @@
   (:export
    ;; enviroment
    *turtle*
+   ;; making
+   
    ;; moving
    move
    move-forward
@@ -24,12 +26,16 @@
    pull-pen
    pull-pen-up
    pull-pen-down
+   ;; speed
+   set-speed
    ;; status
-   pos
    x-coordinate
    y-coordinate
    heading
    pen-pos
+   get-speed
+   pos
+   state
    towards
    distance
    ;; language macro

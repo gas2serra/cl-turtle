@@ -4,16 +4,25 @@
 ;;;; Turtle API
 ;;;;
 
+(declaim (inline move-forward move-backward))
+(declaim (inline turn-left turn-right))
+(declaim (inline pull-pen-up pull-pen-down))
+(declaim (inline pos))
 
+;;;
 ;;; environment
+;;;
+
 (defvar *turtle* nil "The default turtle.")
 
+;;;
 ;;; moving
+;;;
+
 (defun move (distance &optional (turtle *turtle*))
   "Move the turtle forward (distance>0) or backward (distance<0) by the specified distance, in the direction the turtle is headed."
   (turtle.core:turtle-move turtle distance))
 
-(declaim (inline move-forward move-backward))
 (defun move-forward (distance &optional (turtle *turtle*))
   "Move the turtle forward by the specified distance, in the direction the turtle is headed."
   (assert (>= distance 0))
@@ -24,23 +33,29 @@
   (assert (>= distance 0))
   (move (- distance) turtle))
 
+;;;
 ;;; turning
+;;;
+
 (defun turn (angle &optional (turtle *turtle*))
   "Turn the turtle right (angle>0) or left (angle<0) by angle degrees."
   (assert (and (> angle -360) (< angle 360)))
   (turtle.core:turtle-turn turtle angle))
 
-(declaim (inline turn-left turn-right))
 (defun turn-left (angle &optional (turtle *turtle*))
   "Turn the turtle left by angle degrees."
   (assert (and (>= angle 0) (< angle 360)))
   (turn (- angle) turtle))
+
 (defun turn-right (angle &optional (turtle *turtle*))
   "Turn the turtle right by angle degrees."
   (assert (and (>= angle 0) (< angle 360)))
   (turn angle turtle))
 
+;;;
 ;;; go/turn to
+;;;
+
 (defun go-to (x y &optional (turtle *turtle*))
   "Move the turtle to the absolute position (x,y)."
   (turtle.core:turtle-goto turtle x y))
@@ -53,49 +68,86 @@
   "Set the orientation of the turtle to angle."
   (turtle.core:turtle-turn-to turtle angle))
 
-
+;;;
 ;;; pen controll
+;;;
+
 (defun pull-pen (pos &optional (turtle *turtle*))
   "Pull down or up the pen of the turtle."
   (assert (member pos '(:up :down)))
   (turtle.core:turtle-pull-pen turtle pos))
 
-(declaim (inline pull-pen-up pull-pen-down))
 (defun pull-pen-up ( &optional (turtle *turtle*))
   "Pull the pen up."
   (pull-pen :up turtle))
+
 (defun pull-pen-down ( &optional (turtle *turtle*))
   "Pull the pen down." 
   (pull-pen :down turtle))
 
+;;;
+;;; speed
+;;;
+
+(defun set-speed (s &optional (turtle *turtle*))
+  "Set the speed of the turtle"
+  (setf (turtle.core:turtle-speed turtle) s))
+
+;;;
 ;;; status
-(declaim (inline pos))
-(defun pos (&optional (turtle *turtle*))
-  "Return the turtle’s current location (x,y)."
-  (list (x-coordinate turtle) (y-coordinate turtle)))
+;;;
+
 (defun x-coordinate (&optional (turtle *turtle*))
   "Return the turtle’s x coordinate."
   (turtle.core:turtle-x turtle))
+
 (defun y-coordinate (&optional (turtle *turtle*))
   "Return the turtle’s y coordinate."
   (turtle.core:turtle-y turtle))
+
 (defun heading (&optional (turtle *turtle*))
   "Return the turtle’s current heading."
   (turtle.core:turtle-heading turtle))
+
 (defun pen-pos (&optional (turtle *turtle*))
   "Return the pen’s current position (:up or :down)."
   (turtle.core:turtle-pen-position turtle))
+
+(defun get-speed (&optional (turtle *turtle*))
+  "Return the speed of the turtle."
+  (turtle.core:turtle-speed turtle))
+
+(defun pos (&optional (turtle *turtle*))
+  "Return the turtle’s current location (x,y)."
+  (list (x-coordinate turtle) (y-coordinate turtle)))
+
+(defun state (&optional (turtle *turtle*))
+  "Return the full state of the turtle."
+  (list :x (x-coordinate turtle) :y (y-coordinate turtle) :heading (heading turtle) 
+	:pen-pos (pen-pos turtle) :speed (get-speed turtle)))
+
 (defun towards (x y &optional (turtle *turtle*))
   "Return the angle between the line from turtle position to position specified by (x,y)."
   (let ((angle (turtle.core:radians->degrees 
 		(acos (/ (- x (x-coordinate turtle)) (distance x y turtle))))))
     (- (heading turtle) (if (>= y 0.0) angle (- 360 angle)))))
+
 (defun distance (x y &optional (turtle *turtle*))
   "Return the distance from the turtle to (x,y)."
   (turtle.core:points-distance x y (x-coordinate turtle) (y-coordinate turtle)))
- 
 
-;;; language macro
+
+;;;;
+;;;; Surface API
+;;;;
+
+(defvar *surface* nil "The default surface")
+
+
+;;;;
+;;;; Language macro
+;;;;
+
 (defmacro repeat (n &body body)
   "Repeat n-times the body"
   (let ((i (gensym "i")))
@@ -103,11 +155,12 @@
        ,@body)))
 
 
+
 					;
 ;;;;
-;;;; To Set
+;;;; To Fix
 ;;;;
-(defvar *surface* nil)
+
 (defvar *turtle-class* 'turtle.core:turtle)
 (defvar *surface-class* 'turtle.core:surface)
 
@@ -148,19 +201,8 @@
   (setf *surface* nil)
   (setf *turtle* nil))
 
-; speed
-(defun set-speed (s &optional (turtle *turtle*))
-  "Set the speed of the turtle"
-  (setf (turtle.core:turtle-speed turtle) s))
 
-; status
-(defun get-speed (&optional (turtle *turtle*))
-  "Returns the speed of the turtle"
-  (turtle.core:turtle-speed turtle))
-(defun state (&optional (turtle *turtle*))
-  "Returns the full state of the turtle"
-  (list :x (x-coordinate turtle) :y (y-coordinate turtle) :heading (heading turtle) 
-	:pen-pos (pen-pos turtle)))
+
 
 ; utility
 

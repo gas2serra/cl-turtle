@@ -1,12 +1,13 @@
 @begin(section)
 @title(Internals)
 
-@cl:with-package[name="cl-turtle-2d.core"](
+@cl:with-package[name="cl-turtle.core"](
+	@cl:doc(class turtle)
 
-	
-	@cl:doc(struct turtle)
-	
-	
+	@cl:doc(class path)
+
+	@cl:doc(class pen)
+	@cl:doc(class surface)
 )
 
 @end(section)

@@ -30,7 +30,8 @@
     :initform +default-sorface-mode+
     :initarg :mode
     :accessor surface-mode
-    :type (member :batch :interactive))
+    :type (member :batch :interactive)
+    :documentation "mode")
    (turtle
     :initform nil
     :initarg :turtle

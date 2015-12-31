@@ -5,7 +5,7 @@
 (defconstant +default-turtle-home-y+ 0)
 (defconstant +default-turtle-home-heading+ 90)
 (defconstant +default-turtle-home-pen-position+ :up)
-(defconstant +default-turtle-home-pen+ (make-instance 'pen))
+(defparameter +default-turtle-home-pen+ (make-instance 'pen))
 (defconstant +default-turtle-speed+ 1000)
 
 

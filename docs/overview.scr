@@ -1,37 +1,98 @@
+
 @begin(section)
 @title(Overview)
 
+@begin(section)
+@title(Turtle)
 
-@cl:with-package[name="cl-turtle-2d"](
+	@begin(section)
+	@title(Environment)
+	@cl:with-package[name="cl-turtle"](
+		@cl:doc(variable *turtle*)
+	)
+	@end(section)
 
-	@cl:doc(variable *turtle*)
+	@begin(section)
+	@title(Moving)
+	@cl:with-package[name="cl-turtle"](
+		@cl:doc(function move)
+		@cl:doc(function move-forward)
+		@cl:doc(function move-backward)
+	)
+	@end(section)
 
-	@cl:doc(function move)
-	@cl:doc(function move-forward)
-	@cl:doc(function move-backward)
-	@cl:doc(function turn)
-	@cl:doc(function turn-right)
-	@cl:doc(function turn-left)
-	@cl:doc(function go-to)
-	@cl:doc(function go-home)
-	@cl:doc(function turn-to)
-	@cl:doc(function pull-pen)
-	@cl:doc(function pull-pen-up)
-	@cl:doc(function pull-pen-down)
-	@cl:doc(function pos)
-	@cl:doc(function x-coordinate)
-	@cl:doc(function y-coordinate)
-	@cl:doc(function heading)
-	@cl:doc(function pen-pos)
-	@cl:doc(function towards)
-	@cl:doc(function distance)
+	@begin(section)
+	@title(Turning)
+	@cl:with-package[name="cl-turtle"](
+		@cl:doc(function turn)
+		@cl:doc(function turn-right)
+		@cl:doc(function turn-left)
+	)
+	@end(section)
 
-	@cl:doc(macro repeat)
+	@begin(section)
+	@title(Jumping)
+	@cl:with-package[name="cl-turtle"](
+		@cl:doc(function go-to)
+		@cl:doc(function go-home)
+		@cl:doc(function turn-to)
+	)
+	@end(section)
+
+	@begin(section)
+	@title(Pen)
+	@cl:with-package[name="cl-turtle"](
+		@cl:doc(function pull-pen)
+		@cl:doc(function pull-pen-up)
+		@cl:doc(function pull-pen-down)
+	)
+	@end(section)
 
 
-	
-	
+	@begin(section)
+	@title(Speed)
+	@cl:with-package[name="cl-turtle"](
+		@cl:doc(function set-speed)		
+	)
+	@end(section)
+
+	@begin(section)
+	@title(State)
+	@cl:with-package[name="cl-turtle"](
+		@cl:doc(function x-coordinate)
+		@cl:doc(function y-coordinate)
+		@cl:doc(function heading)
+		@cl:doc(function pen-pos)
+		@cl:doc(function get-speed)
+		@cl:doc(function pos)	 
+		@cl:doc(function state)	 
+		@cl:doc(function towards)
+		@cl:doc(function distance)	
+	)
+	@end(section)
+@end(section)
+
+
+@begin(section)
+@title(Surface)
+
+	@begin(section)
+	@title(Environment)
+	@cl:with-package[name="cl-turtle"](
+		@cl:doc(variable *surface*)
+	)
+	@end(section)
+
+
+@end(section)
+
+@begin(section)
+@title(Macros)
+@cl:with-package[name="cl-turtle"](
+	@cl:doc(macro repeat)	
 )
+@end(section)
+
 
 
 @end(section)
