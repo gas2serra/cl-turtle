@@ -1,21 +1,31 @@
 (in-package :cl-turtle.picture)
 
-(defun c-curve (size level)
+(defun %c-curve (size level)
   (if (= level 0)
       (move-forward size)
       (progn
 	(turn 45)
-	(c-curve (* size (sqrt 0.5)) (- level 1))
+	(%c-curve (* size (sqrt 0.5)) (- level 1))
 	(turn -90)
-	(c-curve (* size (sqrt 0.5)) (- level 1))
+	(%c-curve (* size (sqrt 0.5)) (- level 1))
 	(turn 45))))
 
-(defun sierpinski-triangle (size level)
+(defun c-curve (size level &optional (turtle *turtle*))
+  (with-turtle (turtle)
+    (with-pen-down ()
+      (%c-curve size level)))) 
+
+(defun %sierpinski-triangle (size level)
     (unless (= level 0)
       (repeat 3
-	      (sierpinski-triangle (/ size 2) (- level 1))
+	      (%sierpinski-triangle (/ size 2) (- level 1))
 	      (move-forward size)
 	      (turn 120))))
+
+(defun sierpinski-triangle (size level &optional (turtle *turtle*))
+  (with-turtle (turtle)
+    (with-pen-down ()
+      (%sierpinski-triangle size level)))) 
 
 (defun snowflake (size level)
   (if (= level 0)

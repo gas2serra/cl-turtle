@@ -6,9 +6,11 @@
     (change-pen (new-pen :width 1 :color cl-colors:+darkblue+))
     (turn 90)
     (go-to -100 50)
-    (pull-pen-down)
-    (c-curve 200 12)
-    (pull-pen-up)))
+    (with-pen-down ()
+      ;(pull-pen-down)
+      (c-curve 200 12)
+      ;;(pull-pen-up)
+      )))
 
   
 (defun sierpinski-triangle-picture-01 ()

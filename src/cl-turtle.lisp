@@ -8,6 +8,7 @@
   (:export
    ;; enviroment
    *turtle*
+   with-turtle
    ;; making
    
    ;; moving
@@ -40,7 +41,7 @@
    distance
    ;; language macro
    repeat
-
+   with-pen-down
 
    ;; to fix
    with-image

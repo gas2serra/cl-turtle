@@ -154,9 +154,18 @@
     `(dotimes (,i ,n)
        ,@body)))
 
+(defmacro with-turtle ((turtle) &body body)
+  `(let ((*turtle* ,turtle))
+     ,@body))
 
+(defmacro with-pen-down ((&optional (turtle '*turtle*)) &body body)
+  ""
+  (let ((old-pen-pos (gensym "old-pen-pos")))
+    `(let ((,old-pen-pos (pen-pos ,turtle)))
+       (when (eq ,old-pen-pos :up) (pull-pen :down ,turtle))
+       ,@body
+       (when (eq ,old-pen-pos :up) (pull-pen :up ,turtle)))))
 
-					;
 ;;;;
 ;;;; To Fix
 ;;;;
