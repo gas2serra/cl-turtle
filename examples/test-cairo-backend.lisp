@@ -1,17 +1,12 @@
 (asdf:operate 'asdf:load-op 'cl-cairo-turtle)
+(asdf:operate 'asdf:load-op 'cl-turtle-examples)
 
-(in-package :cl-turtle)
+(in-package :cl-turtle-examples)
 
-(load "test-examples")
-
-(let ((*ext* "png"))
-  (run))
-(let ((*ext* "svg"))
-  (run))
-(let ((*ext* "pdf"))
-  (run))
-(let ((*ext* "ps"))
-  (run))
+(run "png")
+(run "svg")
+(run "pdf")
+(run "ps")
 
 
 #+ sbcl

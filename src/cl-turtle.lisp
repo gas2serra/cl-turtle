@@ -40,4 +40,14 @@
    distance
    ;; language macro
    repeat
+
+
+   ;; to fix
+   with-image
+   new-pen
+   change-pen
+   pen-attr
+   clone-pen
+   set-background-color
+   *SURFACE-CLASS*
    ))

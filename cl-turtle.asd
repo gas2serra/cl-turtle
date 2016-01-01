@@ -37,11 +37,15 @@
 		;		       (:file "logo-package")
 		;		       (:file "logo" :depends-on ("logo-package"))))
 		 (:module "src"
-			  :depends-on ("src/core" ;"src/logo"
-				       )
+			  :depends-on ("src/core")
 			  :components (
 				       (:file "cl-turtle")
 				       (:file "api" :depends-on ("cl-turtle"))))
+		 (:module "src/picture"
+			  :depends-on ("src")
+			  :components (
+				       (:file "package")
+				       (:file "recursive" :depends-on ("package"))))
 		 )
     :description ""
     :long-description

@@ -1,11 +1,10 @@
 (asdf:operate 'asdf:load-op 'cl-svg-turtle)
+(asdf:operate 'asdf:load-op 'cl-turtle-examples)
 
-(in-package :cl-turtle)
 
-(load "test-examples")
+(in-package :cl-turtle-examples)
 
-(let ((*ext* "svg"))
-  (run))
+(run "svg")
 
 #+ sbcl
 (SB-EXT:QUIT)
