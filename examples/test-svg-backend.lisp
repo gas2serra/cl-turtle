@@ -1,5 +1,5 @@
-(asdf:operate 'asdf:load-op 'cl-svg-turtle)
-(asdf:operate 'asdf:load-op 'cl-turtle-examples)
+(asdf:require-system 'cl-svg-turtle)
+(asdf:require-system 'cl-turtle-examples)
 
 
 (in-package :cl-turtle-examples)
